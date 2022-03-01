@@ -4,9 +4,10 @@
     package="dev.olaren.okane.android">
 
     <application
+        android:name=".OkaneApp"
         android:fullBackupContent="false"
         android:allowBackup="false"
-        android:supportsRtl="true"
+        android:supportsRtl="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         tools:targetApi="s">
         <activity

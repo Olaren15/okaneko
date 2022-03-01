@@ -1,13 +1,16 @@
-import java.util.Properties
 import java.io.FileInputStream
+import java.util.*
 
 plugins {
+    kotlin("android")
+    kotlin("kapt")
+
     id("com.android.application")
     id("com.google.gms.google-services")
-    kotlin("android")
+    id("dagger.hilt.android.plugin")
 }
 
-val composeVersion by extra("1.1.0")
+val composeVersion by extra("1.1.1")
 
 val keystorePropertiesFile = project.file("keystore.properties")
 val keystoreProperties = Properties()
@@ -64,10 +67,18 @@ dependencies {
     implementation(project(":shared"))
 
     // compose
+    implementation("androidx.navigation:navigation-compose:2.4.1")
     implementation("androidx.compose.ui:ui:${project.extra["composeVersion"]}")
     implementation("androidx.compose.material:material:${project.extra["composeVersion"]}")
+    implementation("androidx.compose.material:material-icons-extended:${project.extra["composeVersion"]}")
+    implementation("androidx.compose.material:material-icons-core:${project.extra["composeVersion"]}")
     implementation("androidx.compose.ui:ui-tooling-preview:${project.extra["composeVersion"]}")
     implementation("androidx.activity:activity-compose:1.4.0")
+
+    // hilt
+    implementation("com.google.dagger:hilt-android:2.41")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+    kapt("com.google.dagger:hilt-android-compiler:2.41")
 
     // tests
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:${project.extra["composeVersion"]}")
