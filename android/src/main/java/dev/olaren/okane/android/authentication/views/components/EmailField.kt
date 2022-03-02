@@ -4,15 +4,17 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun EmailField(
-    emailValue: TextFieldValue,
-    onEmailChange: (TextFieldValue) -> Unit,
-    isError: Boolean
+    modifier: Modifier = Modifier,
+    emailValue: TextFieldValue = TextFieldValue(""),
+    onEmailChange: (TextFieldValue) -> Unit = {},
+    isError: Boolean = false,
 ) {
     TextField(
         value = emailValue,
@@ -21,6 +23,7 @@ fun EmailField(
         placeholder = { Text("Email") },
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+        modifier = modifier,
         isError = isError,
     )
 }
@@ -28,5 +31,5 @@ fun EmailField(
 @Preview
 @Composable
 fun PreviewEmailField() {
-    EmailField(emailValue = TextFieldValue("this.is.an@email.com"), onEmailChange = {}, false)
+    EmailField(emailValue = TextFieldValue("this.is.an@email.com"))
 }

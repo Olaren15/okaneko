@@ -16,6 +16,22 @@ actual class AuthenticationRepository {
         return signInWithCredentials(EmailAuthProvider.getCredential(email, password))
     }
 
+    actual suspend fun signInAnonymously(): Result<User> {
+        val user = auth.signInAnonymously().await().user
+        return if (user != null)
+            Result.success(UserMapper().map(user))
+        else
+            Result.failure(SignInError())
+    }
+
+    actual suspend fun signOut() {
+        auth.signOut()
+    }
+
+    actual fun isUserLoggedIn(): Boolean {
+        return auth.currentUser != null
+    }
+
     private suspend fun signInWithCredentials(credentials: AuthCredential): Result<User> {
         return try {
             val user = auth.signInWithCredential(credentials).await().user

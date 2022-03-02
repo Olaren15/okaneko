@@ -38,7 +38,7 @@ class SignInViewModel @Inject constructor(private val authenticationUseCases: Au
                 _password.value = event.value
             }
 
-            is SignInEvents.PressedSignInButton -> {
+            is SignInEvents.PressedEmailSignInButton -> {
                 viewModelScope.launch {
                     authenticationUseCases.signInWithEmailAndPassword(
                         _email.value.text,
@@ -57,6 +57,17 @@ class SignInViewModel @Inject constructor(private val authenticationUseCases: Au
                             }
                         }
                     }
+                }
+            }
+
+            is SignInEvents.PressedAnonymousSignInButton -> {
+                viewModelScope.launch {
+                    authenticationUseCases.signInAnonymously()
+                        .onSuccess {
+                            _eventFlow.emit(UiEvent.SignedIn)
+                        }.onFailure {
+                            _eventFlow.emit(UiEvent.SignInError)
+                        }
                 }
             }
         }

@@ -2,8 +2,6 @@ package dev.olaren.okane.android.authentication.views
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -15,6 +13,7 @@ import dev.olaren.okane.android.Routes
 import dev.olaren.okane.android.authentication.viewmodels.SignInViewModel
 import dev.olaren.okane.android.authentication.views.components.EmailField
 import dev.olaren.okane.android.authentication.views.components.PasswordField
+import dev.olaren.okane.android.authentication.views.components.SignInButtons
 import dev.olaren.okane.android.authentication.views.events.SignInEvents
 import kotlinx.coroutines.flow.collectLatest
 
@@ -59,35 +58,50 @@ fun SignIn(navController: NavController, viewModel: SignInViewModel = hiltViewMo
         }
     }
 
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+    BoxWithConstraints(
+        modifier = Modifier
+            .fillMaxWidth()
+            .width(400.dp)
+            .padding(40.dp),
+        contentAlignment = Alignment.Center
     ) {
-        EmailField(
-            emailValue = viewModel.email.value,
-            onEmailChange = { viewModel.onEvent(SignInEvents.EnteredEmail(it)) },
-            textFieldInError
-        )
-        Spacer(modifier = Modifier.height(5.dp))
-        PasswordField(
-            passwordValue = viewModel.password.value,
-            onPasswordChange = { viewModel.onEvent(SignInEvents.EnteredPassword(it)) },
-            textFieldInError
-        )
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            EmailField(
+                emailValue = viewModel.email.value,
+                onEmailChange = { viewModel.onEvent(SignInEvents.EnteredEmail(it)) },
+                isError = textFieldInError,
+                modifier = Modifier.fillMaxWidth(),
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+            PasswordField(
+                passwordValue = viewModel.password.value,
+                onPasswordChange = { viewModel.onEvent(SignInEvents.EnteredPassword(it)) },
+                isError = textFieldInError,
+                modifier = Modifier.fillMaxWidth(),
+            )
 
-        Button(onClick = { viewModel.onEvent(SignInEvents.PressedSignInButton) }) {
-            Text("Sign In")
-        }
+            Spacer(modifier = Modifier.height(5.dp))
 
-        Button(onClick = {
-            navController.navigate(Routes.SignUp.route) {
-                popUpTo(Routes.SignIn.route) {
-                    inclusive = true
+            SignInButtons(
+                onSignInButtonClick = {
+                    viewModel.onEvent(SignInEvents.PressedEmailSignInButton)
+                },
+                OnAnonymousSignInButtonClick = {
+                    viewModel.onEvent(SignInEvents.PressedAnonymousSignInButton)
+                },
+                onSignUpButtonClick = {
+                    navController.navigate(Routes.SignUp.route) {
+                        popUpTo(Routes.SignIn.route) {
+                            inclusive = true
+                        }
+                    }
                 }
-            }
-        }) {
-            Text("Don't have an acoount? Sign Up!")
+
+            )
         }
     }
 }

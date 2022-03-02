@@ -6,7 +6,9 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dev.olaren.okane.authentication.repositories.AuthenticationRepository
 import dev.olaren.okane.authentication.use_case.AuthenticationUseCases
+import dev.olaren.okane.authentication.use_case.SignInAnonymously
 import dev.olaren.okane.authentication.use_case.SignInWithEmailAndPassword
+import dev.olaren.okane.authentication.use_case.SignOut
 import javax.inject.Singleton
 
 @Module
@@ -16,7 +18,9 @@ object AppModule {
     @Singleton
     fun provideAuthenticationUseCases(): AuthenticationUseCases {
         return AuthenticationUseCases(
-            signInWithEmailAndPassword = SignInWithEmailAndPassword(AuthenticationRepository())
+            signInWithEmailAndPassword = SignInWithEmailAndPassword(AuthenticationRepository()),
+            signInAnonymously = SignInAnonymously(AuthenticationRepository()),
+            signOut = SignOut(AuthenticationRepository())
         )
     }
 }

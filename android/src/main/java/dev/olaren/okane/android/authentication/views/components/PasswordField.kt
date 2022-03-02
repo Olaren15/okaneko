@@ -9,6 +9,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
@@ -17,9 +18,10 @@ import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun PasswordField(
-    passwordValue: TextFieldValue,
-    onPasswordChange: (TextFieldValue) -> Unit,
-    isError: Boolean
+    modifier: Modifier = Modifier,
+    passwordValue: TextFieldValue = TextFieldValue(""),
+    onPasswordChange: (TextFieldValue) -> Unit = {},
+    isError: Boolean = false,
 ) {
     var passwordVisibility by remember { mutableStateOf(false) }
 
@@ -31,6 +33,7 @@ fun PasswordField(
         singleLine = true,
         visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        modifier = modifier,
         isError = isError,
         trailingIcon = {
             val image = if (passwordVisibility)
@@ -50,9 +53,5 @@ fun PasswordField(
 @Preview
 @Composable
 fun PreviewPassword() {
-    PasswordField(
-        passwordValue = TextFieldValue("This is a password"),
-        onPasswordChange = {},
-        false
-    )
+    PasswordField(passwordValue = TextFieldValue("This is a password"))
 }
