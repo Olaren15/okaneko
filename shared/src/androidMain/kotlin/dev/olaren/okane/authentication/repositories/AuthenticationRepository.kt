@@ -42,8 +42,9 @@ actual class AuthenticationRepository {
             Result.failure(SignInError())
     }
 
-    actual fun signOut() {
+    actual fun signOut(): Boolean {
         auth.signOut()
+        return true
     }
 
     actual fun isUserLoggedIn(): Boolean {

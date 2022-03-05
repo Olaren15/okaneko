@@ -6,6 +6,8 @@ plugins {
 
 version = "1.0"
 
+val kotlinxCoroutinesVersion by extra("1.6.0")
+
 kotlin {
     android()
     iosX64()
@@ -17,13 +19,21 @@ kotlin {
         homepage = "Link to the Shared Module homepage"
         ios.deploymentTarget = "14.1"
         podfile = project.file("../ios/Podfile")
+
+        pod("FirebaseAuth")
+        pod("FirebaseCore")
+
         framework {
             baseName = "shared"
         }
     }
 
     sourceSets {
-        val commonMain by getting
+        val commonMain by getting {
+            dependencies {
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${project.extra["kotlinxCoroutinesVersion"]}")
+            }
+        }
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
@@ -34,7 +44,7 @@ kotlin {
                 implementation(project.dependencies.platform("com.google.firebase:firebase-bom:29.1.0"))
                 implementation("com.google.firebase:firebase-analytics-ktx")
                 implementation("com.google.firebase:firebase-auth-ktx")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:${project.extra["kotlinxCoroutinesVersion"]}")
             }
         }
         val androidTest by getting

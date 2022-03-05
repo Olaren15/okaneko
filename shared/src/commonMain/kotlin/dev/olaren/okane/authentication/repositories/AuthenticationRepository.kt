@@ -9,7 +9,7 @@ expect class AuthenticationRepository {
 
     suspend fun signInAnonymously(): Result<User>
 
-    fun signOut()
+    fun signOut(): Boolean
 
     fun isUserLoggedIn(): Boolean
 }
