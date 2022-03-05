@@ -1,35 +1,158 @@
 package dev.olaren.okane.android.authentication.views
 
-import androidx.compose.foundation.layout.Column
+import android.widget.Toast
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.Button
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
 import androidx.compose.runtime.*
-import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import dev.olaren.okane.android.Routes
+import dev.olaren.okane.android.authentication.viewmodels.SingUpViewModel
+import dev.olaren.okane.android.authentication.views.components.EmailField
+import dev.olaren.okane.android.authentication.views.components.PasswordField
+import dev.olaren.okane.android.authentication.views.events.SignUpEvents
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
-fun SignUp(navController: NavController) {
+fun SignUp(navController: NavController, viewModel: SingUpViewModel = hiltViewModel()) {
     Column {
-        var email by remember {
-            mutableStateOf(TextFieldValue(""))
+        val context = LocalContext.current
+
+        var emailFieldInError by remember { mutableStateOf(false) }
+        var passwordFieldsInError by remember { mutableStateOf(false) }
+
+        val passwordFocusRequester = FocusRequester()
+        val confirmedPasswordFocusRequester = FocusRequester()
+
+        LaunchedEffect(key1 = true) {
+            viewModel.eventFlow.collectLatest {
+                when (it) {
+                    is SingUpViewModel.UiEvent.InvalidEmailEntered,
+                    is SingUpViewModel.UiEvent.UserAlreadyExists -> {
+                        emailFieldInError = true
+                        Toast.makeText(
+                            context,
+                            "The entered email is invalid",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
+                    is SingUpViewModel.UiEvent.PasswordDidNotMatch -> {
+                        passwordFieldsInError = true
+                        Toast.makeText(
+                            context,
+                            "The provided passwords do not match",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+
+                    is SingUpViewModel.UiEvent.PasswordIsTooWeak -> {
+                        passwordFieldsInError = true
+                        Toast.makeText(
+                            context,
+                            "The provided password does not meet the requirements",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
+                    is SingUpViewModel.UiEvent.SignedUp -> {
+                        navController.navigate(Routes.Groups.route) {
+                            popUpTo(Routes.SignUp.route) {
+                                inclusive = true
+                            }
+                        }
+                    }
+                }
+            }
         }
 
-        var password by remember {
-            mutableStateOf(TextFieldValue(""))
-        }
+        BoxWithConstraints(
+            modifier = Modifier
+                .fillMaxWidth()
+                .width(400.dp)
+                .padding(40.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                EmailField(
+                    modifier = Modifier.fillMaxWidth(),
+                    emailValue = viewModel.email.value,
+                    onEmailChange = { viewModel.handleEvent(SignUpEvents.EnteredEmail(it)) },
+                    isError = emailFieldInError,
+                    imeAction = ImeAction.Next,
+                    keyboardActions = KeyboardActions {
+                        passwordFocusRequester.requestFocus()
+                    }
+                )
 
-        TextField(value = email, onValueChange = { newEmail -> email = newEmail })
+                Spacer(modifier = Modifier.height(10.dp))
 
-        TextField(value = password, onValueChange = { newPassword -> password = newPassword })
+                PasswordField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .focusRequester(passwordFocusRequester),
+                    passwordValue = viewModel.password.value,
+                    onPasswordChange = { viewModel.handleEvent(SignUpEvents.EnteredPassword(it)) },
+                    isError = passwordFieldsInError,
+                    imeAction = ImeAction.Next,
+                    keyboardActions = KeyboardActions {
+                        confirmedPasswordFocusRequester.requestFocus()
+                    }
+                )
 
-        Button(onClick = { navController.navigate(Routes.Groups.route) }) {
-            Text("Sign Up")
-        }
+                Spacer(modifier = Modifier.height(10.dp))
 
-        Button(onClick = { navController.navigate(Routes.SignIn.route) }) {
-            Text("Already have an account?")
+                PasswordField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .focusRequester(confirmedPasswordFocusRequester),
+                    passwordValue = viewModel.confirmedPassword.value,
+                    label = "Confirm password",
+                    placeholder = "Confirm password",
+                    onPasswordChange = {
+                        viewModel.handleEvent(
+                            SignUpEvents.EnteredConfirmedPassword(
+                                it
+                            )
+                        )
+                    },
+                    isError = passwordFieldsInError,
+                    imeAction = ImeAction.Go,
+                    keyboardActions = KeyboardActions {
+                        emailFieldInError = false
+                        passwordFieldsInError = false
+                        viewModel.handleEvent(SignUpEvents.SignUpButtonPressed)
+                    }
+                )
+
+                Spacer(modifier = Modifier.height(5.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    Button(onClick = {
+                        emailFieldInError = false
+                        passwordFieldsInError = false
+                        viewModel.handleEvent(SignUpEvents.SignUpButtonPressed)
+                    }) {
+                        Text("Sign Up")
+                    }
+                }
+            }
         }
     }
 }

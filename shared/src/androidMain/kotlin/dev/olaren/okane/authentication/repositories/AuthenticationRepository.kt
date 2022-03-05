@@ -5,12 +5,30 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import dev.olaren.okane.authentication.data.dto.User
 import dev.olaren.okane.authentication.data.mapper.UserMapper
-import dev.olaren.okane.authentication.exceptions.InvalidCredentials
-import dev.olaren.okane.authentication.exceptions.SignInError
+import dev.olaren.okane.authentication.exceptions.*
 import kotlinx.coroutines.tasks.await
 
 actual class AuthenticationRepository {
     private val auth = Firebase.auth
+
+    actual suspend fun signUpWithEmailAndPassword(
+        email: String,
+        password: String
+    ): Result<User> {
+        return try {
+            val user = auth.createUserWithEmailAndPassword(email, password).await().user
+            return if (user != null)
+                Result.success(UserMapper().map(user))
+            else
+                Result.failure(SignUpError())
+        } catch (e: FirebaseAuthWeakPasswordException) {
+            Result.failure(PasswordTooWeakError())
+        } catch (e: FirebaseAuthInvalidCredentialsException) {
+            Result.failure(InvalidEmailError())
+        } catch (e: FirebaseAuthUserCollisionException) {
+            Result.failure(UserAlreadyExistsError())
+        }
+    }
 
     actual suspend fun signInWithEmailAndPassword(email: String, password: String): Result<User> {
         return signInWithCredentials(EmailAuthProvider.getCredential(email, password))
@@ -24,7 +42,7 @@ actual class AuthenticationRepository {
             Result.failure(SignInError())
     }
 
-    actual suspend fun signOut() {
+    actual fun signOut() {
         auth.signOut()
     }
 
@@ -40,11 +58,11 @@ actual class AuthenticationRepository {
             else
                 Result.failure(SignInError())
         } catch (e: FirebaseAuthInvalidUserException) {
-            Result.failure(InvalidCredentials())
+            Result.failure(InvalidCredentialsError())
         } catch (e: FirebaseAuthInvalidCredentialsException) {
-            Result.failure(InvalidCredentials())
+            Result.failure(InvalidCredentialsError())
         } catch (e: FirebaseAuthUserCollisionException) {
-            Result.failure(SignInError())
+            Result.failure(UserAlreadyExistsError())
         }
     }
 }

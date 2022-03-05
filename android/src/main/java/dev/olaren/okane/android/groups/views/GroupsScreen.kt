@@ -29,7 +29,7 @@ fun Groups(navController: NavController, viewModel: GroupsViewModel = hiltViewMo
     }
 
     Button(onClick = {
-        viewModel.onEvent(GroupsEvent.PressedLogOutButton)
+        viewModel.handleEvent(GroupsEvent.PressedLogOutButton)
     }) {
         Text("Sign Out")
     }

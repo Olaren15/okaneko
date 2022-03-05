@@ -17,7 +17,7 @@ class GroupsViewModel @Inject constructor(private val authenticationUseCases: Au
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
-    fun onEvent(event: GroupsEvent) {
+    fun handleEvent(event: GroupsEvent) {
         when (event) {
             is GroupsEvent.PressedLogOutButton -> {
                 viewModelScope.launch {

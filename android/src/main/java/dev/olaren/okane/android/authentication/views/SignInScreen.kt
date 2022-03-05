@@ -2,10 +2,14 @@ package dev.olaren.okane.android.authentication.views
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -22,6 +26,8 @@ fun SignIn(navController: NavController, viewModel: SignInViewModel = hiltViewMo
     val context = LocalContext.current
 
     var textFieldInError by remember { mutableStateOf(false) }
+
+    val passwordFocusRequester = FocusRequester()
 
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest {
@@ -71,36 +77,41 @@ fun SignIn(navController: NavController, viewModel: SignInViewModel = hiltViewMo
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             EmailField(
-                emailValue = viewModel.email.value,
-                onEmailChange = { viewModel.onEvent(SignInEvents.EnteredEmail(it)) },
-                isError = textFieldInError,
                 modifier = Modifier.fillMaxWidth(),
+                emailValue = viewModel.email.value,
+                onEmailChange = { viewModel.handleEvent(SignInEvents.EnteredEmail(it)) },
+                isError = textFieldInError,
+                imeAction = ImeAction.Next,
+                keyboardActions = KeyboardActions {
+                    passwordFocusRequester.requestFocus()
+                },
             )
             Spacer(modifier = Modifier.height(10.dp))
             PasswordField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .focusRequester(passwordFocusRequester),
                 passwordValue = viewModel.password.value,
-                onPasswordChange = { viewModel.onEvent(SignInEvents.EnteredPassword(it)) },
+                onPasswordChange = { viewModel.handleEvent(SignInEvents.EnteredPassword(it)) },
                 isError = textFieldInError,
-                modifier = Modifier.fillMaxWidth(),
+                imeAction = ImeAction.Go,
+                keyboardActions = KeyboardActions {
+                    viewModel.handleEvent(SignInEvents.PressedEmailSignInButton)
+                }
             )
 
             Spacer(modifier = Modifier.height(5.dp))
 
             SignInButtons(
                 onSignInButtonClick = {
-                    viewModel.onEvent(SignInEvents.PressedEmailSignInButton)
+                    viewModel.handleEvent(SignInEvents.PressedEmailSignInButton)
                 },
                 OnAnonymousSignInButtonClick = {
-                    viewModel.onEvent(SignInEvents.PressedAnonymousSignInButton)
+                    viewModel.handleEvent(SignInEvents.PressedAnonymousSignInButton)
                 },
                 onSignUpButtonClick = {
-                    navController.navigate(Routes.SignUp.route) {
-                        popUpTo(Routes.SignIn.route) {
-                            inclusive = true
-                        }
-                    }
+                    navController.navigate(Routes.SignUp.route)
                 }
-
             )
         }
     }
