@@ -106,7 +106,7 @@ fun SignIn(navController: NavController, viewModel: SignInViewModel = hiltViewMo
                 onSignInButtonClick = {
                     viewModel.handleEvent(SignInEvents.PressedEmailSignInButton)
                 },
-                OnAnonymousSignInButtonClick = {
+                onAnonymousSignInButtonClick = {
                     viewModel.handleEvent(SignInEvents.PressedAnonymousSignInButton)
                 },
                 onSignUpButtonClick = {

@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun SignInButtons(
     onSignInButtonClick: () -> Unit = {},
-    OnAnonymousSignInButtonClick: () -> Unit = {},
+    onAnonymousSignInButtonClick: () -> Unit = {},
     onSignUpButtonClick: () -> Unit = {},
 ) {
     Row(
@@ -26,7 +26,7 @@ fun SignInButtons(
                 Text("Sign up")
             }
 
-            TextButton(onClick = OnAnonymousSignInButtonClick) {
+            TextButton(onClick = onAnonymousSignInButtonClick) {
                 Text("Continue as guest")
             }
         }
