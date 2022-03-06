@@ -51,7 +51,7 @@ fun SignUp(navController: NavController, viewModel: SingUpViewModel = hiltViewMo
                         Toast.makeText(
                             context,
                             "The provided passwords do not match",
-                            Toast.LENGTH_LONG
+                            Toast.LENGTH_SHORT
                         ).show()
                     }
 
@@ -70,6 +70,17 @@ fun SignUp(navController: NavController, viewModel: SingUpViewModel = hiltViewMo
                                 inclusive = true
                             }
                         }
+                    }
+
+                    SingUpViewModel.UiEvent.SignUpError -> {
+                        emailFieldInError = true
+                        passwordFieldsInError = true
+
+                        Toast.makeText(
+                            context,
+                            "An error occured while signing up",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }

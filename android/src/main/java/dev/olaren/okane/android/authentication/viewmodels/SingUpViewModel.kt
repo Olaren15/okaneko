@@ -5,12 +5,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.github.michaelbull.result.onFailure
+import com.github.michaelbull.result.onSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.olaren.okane.android.authentication.views.events.SignUpEvents
-import dev.olaren.okane.authentication.exceptions.InvalidEmailError
-import dev.olaren.okane.authentication.exceptions.PasswordNotMatchingError
-import dev.olaren.okane.authentication.exceptions.PasswordTooWeakError
-import dev.olaren.okane.authentication.exceptions.UserAlreadyExistsError
+import dev.olaren.okane.authentication.errors.SignUpError
 import dev.olaren.okane.authentication.use_case.AuthenticationUseCases
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -56,20 +55,23 @@ class SingUpViewModel @Inject constructor(private val authenticationUseCases: Au
                         _eventFlow.emit(UiEvent.SignedUp)
                     }.onFailure {
                         when (it) {
-                            is InvalidEmailError -> {
+                            is SignUpError.InvalidEmailError -> {
                                 _eventFlow.emit(UiEvent.InvalidEmailEntered)
                             }
 
-                            is PasswordNotMatchingError -> {
+                            is SignUpError.PasswordsNotMatchingError -> {
                                 _eventFlow.emit(UiEvent.PasswordDidNotMatch)
                             }
 
-                            is PasswordTooWeakError -> {
+                            is SignUpError.PasswordTooWeakError -> {
                                 _eventFlow.emit(UiEvent.PasswordIsTooWeak)
                             }
 
-                            is UserAlreadyExistsError -> {
+                            is SignUpError.UserAlreadyExistsError -> {
                                 _eventFlow.emit(UiEvent.UserAlreadyExists)
+                            }
+                            SignUpError.UnknownError -> {
+                                _eventFlow.emit(UiEvent.SignUpError)
                             }
                         }
                     }
@@ -84,5 +86,6 @@ class SingUpViewModel @Inject constructor(private val authenticationUseCases: Au
         object PasswordDidNotMatch : UiEvent()
         object PasswordIsTooWeak : UiEvent()
         object UserAlreadyExists : UiEvent()
+        object SignUpError : UiEvent()
     }
 }

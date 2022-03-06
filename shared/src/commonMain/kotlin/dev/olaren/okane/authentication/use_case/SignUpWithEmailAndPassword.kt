@@ -1,9 +1,9 @@
 package dev.olaren.okane.authentication.use_case
 
+import com.github.michaelbull.result.Err
+import com.github.michaelbull.result.Result
 import dev.olaren.okane.authentication.data.dto.User
-import dev.olaren.okane.authentication.exceptions.InvalidEmailError
-import dev.olaren.okane.authentication.exceptions.PasswordNotMatchingError
-import dev.olaren.okane.authentication.exceptions.PasswordTooWeakError
+import dev.olaren.okane.authentication.errors.SignUpError
 import dev.olaren.okane.authentication.repositories.AuthenticationRepository
 
 class SignUpWithEmailAndPassword(private val repository: AuthenticationRepository) {
@@ -17,21 +17,21 @@ class SignUpWithEmailAndPassword(private val repository: AuthenticationRepositor
         email: String,
         password: String,
         confirmedPassword: String
-    ): Result<User> {
+    ): Result<User, SignUpError> {
         val trimmedEmail = email.trim()
         val trimmedPassword = password.trim()
         val trimmedConfirmedPassword = confirmedPassword.trim()
 
         if (!trimmedEmail.matches(emailRegex)) {
-            return Result.failure(InvalidEmailError())
+            return Err(SignUpError.InvalidEmailError)
         }
 
         if (trimmedPassword != trimmedConfirmedPassword) {
-            return Result.failure(PasswordNotMatchingError())
+            return Err(SignUpError.PasswordsNotMatchingError)
         }
 
         if (!trimmedPassword.matches(passwordRegex)) {
-            return Result.failure(PasswordTooWeakError())
+            return Err(SignUpError.PasswordTooWeakError)
         }
 
         return repository.signUpWithEmailAndPassword(trimmedEmail, trimmedPassword)

@@ -20,9 +20,6 @@ kotlin {
         ios.deploymentTarget = "14.1"
         podfile = project.file("../ios/Podfile")
 
-        pod("FirebaseAuth")
-        pod("FirebaseCore")
-
         framework {
             baseName = "shared"
         }
@@ -31,7 +28,8 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${project.extra["kotlinxCoroutinesVersion"]}")
+                implementation("dev.gitlive:firebase-auth:1.4.3")
+                implementation("com.michael-bull.kotlin-result:kotlin-result:1.1.14")
             }
         }
         val commonTest by getting {
@@ -39,14 +37,7 @@ kotlin {
                 implementation(kotlin("test"))
             }
         }
-        val androidMain by getting {
-            dependencies {
-                implementation(project.dependencies.platform("com.google.firebase:firebase-bom:29.1.0"))
-                implementation("com.google.firebase:firebase-analytics-ktx")
-                implementation("com.google.firebase:firebase-auth-ktx")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:${project.extra["kotlinxCoroutinesVersion"]}")
-            }
-        }
+        val androidMain by getting
         val androidTest by getting
         val iosX64Main by getting
         val iosArm64Main by getting

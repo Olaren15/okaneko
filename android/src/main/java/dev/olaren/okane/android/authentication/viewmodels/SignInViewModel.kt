@@ -5,11 +5,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.github.michaelbull.result.onFailure
+import com.github.michaelbull.result.onSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.olaren.okane.android.authentication.views.events.SignInEvents
-import dev.olaren.okane.authentication.exceptions.InvalidCredentialsError
-import dev.olaren.okane.authentication.exceptions.SignInError
-import dev.olaren.okane.authentication.exceptions.UserAlreadyExistsError
+import dev.olaren.okane.authentication.errors.SignInError
 import dev.olaren.okane.authentication.use_case.AuthenticationUseCases
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -49,16 +49,12 @@ class SignInViewModel @Inject constructor(private val authenticationUseCases: Au
 
                     }.onFailure {
                         when (it) {
-                            is InvalidCredentialsError -> {
+                            is SignInError.InvalidCredentialsError -> {
                                 _eventFlow.emit(UiEvent.InvalidCredentials)
                             }
 
-                            is SignInError -> {
+                            is SignInError.UnknownError -> {
                                 _eventFlow.emit(UiEvent.SignInError)
-                            }
-
-                            is UserAlreadyExistsError -> {
-                                TODO("Handle this when adding other sing in providers")
                             }
                         }
                     }
