@@ -1,6 +1,7 @@
-package dev.olaren.okane.authentication.data.dto
+package dev.olaren.okane.authentication.data.mapper
 
 import dev.gitlive.firebase.auth.FirebaseUser
+import dev.olaren.okane.authentication.data.dto.User
 
 class UserMapper {
     fun map(firebaseUser: FirebaseUser): User {

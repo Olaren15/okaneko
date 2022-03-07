@@ -11,7 +11,6 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import dev.olaren.okane.android.Routes
 import dev.olaren.okane.android.authentication.viewmodels.SignInViewModel
@@ -19,10 +18,13 @@ import dev.olaren.okane.android.authentication.views.components.EmailField
 import dev.olaren.okane.android.authentication.views.components.PasswordField
 import dev.olaren.okane.android.authentication.views.components.SignInButtons
 import dev.olaren.okane.android.authentication.views.events.SignInEvents
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.collect
+import org.kodein.di.compose.rememberViewModel
 
 @Composable
-fun SignIn(navController: NavController, viewModel: SignInViewModel = hiltViewModel()) {
+fun SignIn(navController: NavController) {
+    val viewModel: SignInViewModel by rememberViewModel()
+
     val context = LocalContext.current
 
     var textFieldInError by remember { mutableStateOf(false) }
@@ -30,7 +32,7 @@ fun SignIn(navController: NavController, viewModel: SignInViewModel = hiltViewMo
     val passwordFocusRequester = FocusRequester()
 
     LaunchedEffect(key1 = true) {
-        viewModel.eventFlow.collectLatest {
+        viewModel.eventFlow.collect {
             when (it) {
                 is SignInViewModel.UiEvent.SignedIn -> {
                     textFieldInError = false
@@ -60,7 +62,6 @@ fun SignIn(navController: NavController, viewModel: SignInViewModel = hiltViewMo
                     ).show()
                 }
             }
-
         }
     }
 

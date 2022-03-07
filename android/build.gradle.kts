@@ -3,11 +3,9 @@ import java.util.*
 
 plugins {
     kotlin("android")
-    kotlin("kapt")
 
     id("com.android.application")
-    id("com.google.gms.google-services")
-    id("dagger.hilt.android.plugin")
+    id("com.google.gms.google-services") version ("4.3.10")
 }
 
 val composeVersion by extra("1.1.1")
@@ -75,13 +73,11 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview:${project.extra["composeVersion"]}")
     implementation("androidx.activity:activity-compose:1.4.0")
 
+    // Dependency injection
+    implementation("org.kodein.di:kodein-di-framework-compose:7.10.0")
+
     // Result
     implementation("com.michael-bull.kotlin-result:kotlin-result:1.1.14")
-
-    // hilt
-    implementation("com.google.dagger:hilt-android:2.41")
-    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-    kapt("com.google.dagger:hilt-android-compiler:2.41")
 
     // tests
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:${project.extra["composeVersion"]}")

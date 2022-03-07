@@ -5,4 +5,5 @@ data class AuthenticationUseCases(
     val signInWithEmailAndPassword: SignInWithEmailAndPassword,
     val signInAnonymously: SignInAnonymously,
     val signOut: SignOut,
+    val isUserLoggedIn: IsUserLoggedIn,
 )

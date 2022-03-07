@@ -4,7 +4,6 @@
     package="dev.olaren.okane.android">
 
     <application
-        android:name=".Okane"
         android:icon="@drawable/icon"
         android:fullBackupContent="false"
         android:allowBackup="false"

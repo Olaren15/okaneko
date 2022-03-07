@@ -13,18 +13,19 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import dev.olaren.okane.android.Routes
-import dev.olaren.okane.android.authentication.viewmodels.SingUpViewModel
+import dev.olaren.okane.android.authentication.viewmodels.SignUpViewModel
 import dev.olaren.okane.android.authentication.views.components.EmailField
 import dev.olaren.okane.android.authentication.views.components.PasswordField
 import dev.olaren.okane.android.authentication.views.events.SignUpEvents
 import kotlinx.coroutines.flow.collectLatest
+import org.kodein.di.compose.rememberViewModel
 
 @Composable
-fun SignUp(navController: NavController, viewModel: SingUpViewModel = hiltViewModel()) {
+fun SignUp(navController: NavController) {
     Column {
+        val viewModel: SignUpViewModel by rememberViewModel()
         val context = LocalContext.current
 
         var emailFieldInError by remember { mutableStateOf(false) }
@@ -36,8 +37,8 @@ fun SignUp(navController: NavController, viewModel: SingUpViewModel = hiltViewMo
         LaunchedEffect(key1 = true) {
             viewModel.eventFlow.collectLatest {
                 when (it) {
-                    is SingUpViewModel.UiEvent.InvalidEmailEntered,
-                    is SingUpViewModel.UiEvent.UserAlreadyExists -> {
+                    is SignUpViewModel.UiEvent.InvalidEmailEntered,
+                    is SignUpViewModel.UiEvent.UserAlreadyExists -> {
                         emailFieldInError = true
                         Toast.makeText(
                             context,
@@ -46,7 +47,7 @@ fun SignUp(navController: NavController, viewModel: SingUpViewModel = hiltViewMo
                         ).show()
                     }
 
-                    is SingUpViewModel.UiEvent.PasswordDidNotMatch -> {
+                    is SignUpViewModel.UiEvent.PasswordDidNotMatch -> {
                         passwordFieldsInError = true
                         Toast.makeText(
                             context,
@@ -55,7 +56,7 @@ fun SignUp(navController: NavController, viewModel: SingUpViewModel = hiltViewMo
                         ).show()
                     }
 
-                    is SingUpViewModel.UiEvent.PasswordIsTooWeak -> {
+                    is SignUpViewModel.UiEvent.PasswordIsTooWeak -> {
                         passwordFieldsInError = true
                         Toast.makeText(
                             context,
@@ -64,7 +65,7 @@ fun SignUp(navController: NavController, viewModel: SingUpViewModel = hiltViewMo
                         ).show()
                     }
 
-                    is SingUpViewModel.UiEvent.SignedUp -> {
+                    is SignUpViewModel.UiEvent.SignedUp -> {
                         navController.navigate(Routes.Groups.route) {
                             popUpTo(Routes.SignUp.route) {
                                 inclusive = true
@@ -72,7 +73,7 @@ fun SignUp(navController: NavController, viewModel: SingUpViewModel = hiltViewMo
                         }
                     }
 
-                    SingUpViewModel.UiEvent.SignUpError -> {
+                    SignUpViewModel.UiEvent.SignUpError -> {
                         emailFieldInError = true
                         passwordFieldsInError = true
 

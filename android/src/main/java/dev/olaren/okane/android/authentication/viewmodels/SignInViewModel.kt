@@ -7,18 +7,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.michaelbull.result.onFailure
 import com.github.michaelbull.result.onSuccess
-import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.olaren.okane.android.authentication.views.events.SignInEvents
 import dev.olaren.okane.authentication.errors.SignInError
 import dev.olaren.okane.authentication.use_case.AuthenticationUseCases
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class SignInViewModel @Inject constructor(private val authenticationUseCases: AuthenticationUseCases) :
-    ViewModel() {
+class SignInViewModel(private val authenticationUseCases: AuthenticationUseCases) : ViewModel() {
 
     private val _email = mutableStateOf(TextFieldValue(""))
     val email: State<TextFieldValue> = _email
