@@ -30,7 +30,7 @@ kotlin {
             dependencies {
                 implementation("dev.gitlive:firebase-auth:1.4.3")
                 implementation("com.michael-bull.kotlin-result:kotlin-result:1.1.14")
-                implementation("org.kodein.di:kodein-di:7.10.0")
+                implementation("org.kodein.di:kodein-di:${rootProject.extra["kodeinDiVersion"]}")
             }
         }
         val commonTest by getting {

@@ -10,6 +10,8 @@ buildscript {
     }
 }
 
+val kodeinDiVersion by extra("7.11.0")
+
 allprojects {
     repositories {
         google()

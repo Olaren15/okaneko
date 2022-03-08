@@ -74,7 +74,7 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.4.0")
 
     // Dependency injection
-    implementation("org.kodein.di:kodein-di-framework-compose:7.10.0")
+    implementation("org.kodein.di:kodein-di-framework-compose:${rootProject.extra["kodeinDiVersion"]}")
 
     // Result
     implementation("com.michael-bull.kotlin-result:kotlin-result:1.1.14")
