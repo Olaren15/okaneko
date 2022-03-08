@@ -1,5 +1,5 @@
 import SwiftUI
-import shared
+import mobileShared
 
 struct ContentView: View {
 	var body: some View {

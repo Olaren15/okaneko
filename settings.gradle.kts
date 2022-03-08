@@ -8,4 +8,4 @@ pluginManagement {
 
 rootProject.name = "Okane"
 include(":android")
-include(":shared")
+include(":mobileShared")

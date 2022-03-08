@@ -62,7 +62,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":shared"))
+    implementation(project(":mobileShared"))
 
     // compose
     implementation("androidx.navigation:navigation-compose:2.4.1")

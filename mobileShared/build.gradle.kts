@@ -21,7 +21,7 @@ kotlin {
         podfile = project.file("../ios/Podfile")
 
         framework {
-            baseName = "shared"
+            baseName = "mobileShared"
         }
     }
 
@@ -38,11 +38,17 @@ kotlin {
                 implementation(kotlin("test"))
             }
         }
+
+        @Suppress("UNUSED_VARIABLE")
         val androidMain by getting
+
+        @Suppress("UNUSED_VARIABLE")
         val androidTest by getting
         val iosX64Main by getting
         val iosArm64Main by getting
         val iosSimulatorArm64Main by getting
+
+        @Suppress("UNUSED_VARIABLE")
         val iosMain by creating {
             dependsOn(commonMain)
             iosX64Main.dependsOn(this)
@@ -52,6 +58,8 @@ kotlin {
         val iosX64Test by getting
         val iosArm64Test by getting
         val iosSimulatorArm64Test by getting
+
+        @Suppress("UNUSED_VARIABLE")
         val iosTest by creating {
             dependsOn(commonTest)
             iosX64Test.dependsOn(this)
