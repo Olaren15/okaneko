@@ -6,9 +6,8 @@ plugins {
 
 version = "1.0"
 
-val kotlinxCoroutinesVersion by extra("1.6.0")
-
 kotlin {
+    jvm()
     android()
     iosX64()
     iosArm64()
@@ -18,27 +17,24 @@ kotlin {
         summary = "Some description for the Shared Module"
         homepage = "Link to the Shared Module homepage"
         ios.deploymentTarget = "14.1"
-        podfile = project.file("../ios/Podfile")
-
         framework {
-            baseName = "mobileShared"
+            baseName = "shared"
         }
     }
 
     sourceSets {
-        val commonMain by getting {
-            dependencies {
-                implementation(project(":shared"))
-                implementation("dev.gitlive:firebase-auth:1.4.3")
-                implementation("com.michael-bull.kotlin-result:kotlin-result:1.1.14")
-                implementation("org.kodein.di:kodein-di:${rootProject.extra["kodeinDiVersion"]}")
-            }
-        }
+        val commonMain by getting
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
             }
         }
+
+        @Suppress("UNUSED_VARIABLE")
+        val jvmMain by getting
+
+        @Suppress("UNUSED_VARIABLE")
+        val jvmTest by getting
 
         @Suppress("UNUSED_VARIABLE")
         val androidMain by getting
