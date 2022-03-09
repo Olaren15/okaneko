@@ -4,9 +4,17 @@ plugins {
     id("com.android.library")
 }
 
-version = "1.0"
+val okaneVersion: String by project
 
-val kotlinxCoroutinesVersion by extra("1.6.0")
+val kotlinResultVersion: String by project
+val kodeinDiVersion: String by project
+val firebaseAuthVersion: String by project
+
+val androidCompileSdk: String by project
+val androidMinSdk: String by project
+val androidTargetSdk: String by project
+
+version = okaneVersion
 
 kotlin {
     android()
@@ -29,9 +37,9 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(project(":shared"))
-                implementation("dev.gitlive:firebase-auth:1.4.3")
-                implementation("com.michael-bull.kotlin-result:kotlin-result:1.1.14")
-                implementation("org.kodein.di:kodein-di:${rootProject.extra["kodeinDiVersion"]}")
+                implementation("dev.gitlive:firebase-auth:$firebaseAuthVersion")
+                implementation("com.michael-bull.kotlin-result:kotlin-result:$kotlinResultVersion")
+                implementation("org.kodein.di:kodein-di:$kodeinDiVersion")
             }
         }
         val commonTest by getting {
@@ -71,10 +79,10 @@ kotlin {
 }
 
 android {
-    compileSdk = 32
+    compileSdk = androidCompileSdk.toInt()
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
-        minSdk = 26
-        targetSdk = 32
+        minSdk = androidMinSdk.toInt()
+        targetSdk = androidTargetSdk.toInt()
     }
 }

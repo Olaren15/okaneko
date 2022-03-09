@@ -10,3 +10,4 @@ rootProject.name = "Okane"
 include(":android")
 include(":mobileShared")
 include(":shared")
+include(":server")

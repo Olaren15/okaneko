@@ -4,7 +4,13 @@ plugins {
     id("com.android.library")
 }
 
-version = "1.0"
+val okaneVersion: String by project
+
+val androidCompileSdk: String by project
+val androidMinSdk: String by project
+val androidTargetSdk: String by project
+
+version = okaneVersion
 
 kotlin {
     jvm()
@@ -67,10 +73,10 @@ kotlin {
 }
 
 android {
-    compileSdk = 32
+    compileSdk = androidCompileSdk.toInt()
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
-        minSdk = 26
-        targetSdk = 32
+        minSdk = androidMinSdk.toInt()
+        targetSdk = androidTargetSdk.toInt()
     }
 }

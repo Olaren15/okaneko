@@ -4,13 +4,17 @@ buildscript {
         google()
         mavenCentral()
     }
+
+    val kotlinVersion: String by project
+    val androidGradlePluginVersion: String by project
+    val googleServicesPluginVersion: String by project
+
     dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10")
-        classpath("com.android.tools.build:gradle:7.1.2")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
+        classpath("com.android.tools.build:gradle:$androidGradlePluginVersion")
+        classpath("com.google.gms:google-services:$googleServicesPluginVersion")
     }
 }
-
-val kodeinDiVersion by extra("7.11.0")
 
 allprojects {
     repositories {
