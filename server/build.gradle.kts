@@ -8,11 +8,12 @@ val okaneVersion: String by project
 val ktorVersion: String by project
 val kotlinVersion: String by project
 val logbackVersion: String by project
+val ktorEnvConfigVersion: String by project
 
 group = "dev.olaren.okane"
 version = okaneVersion
 application {
-    mainClass.set("dev.olaren.okane.ApplicationKt")
+    mainClass.set("io.ktor.server.netty.EngineMain")
 }
 
 repositories {
@@ -23,6 +24,8 @@ repositories {
 dependencies {
     implementation("io.ktor:ktor-server-core-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-netty-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-server-auth:$ktorVersion")
+    implementation("io.ktor:ktor-server-auth-jwt:$ktorVersion")
 
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
 
