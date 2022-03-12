@@ -2,6 +2,7 @@ package dev.olaren.okane.plugins
 
 import com.auth0.jwk.JwkProviderBuilder
 import com.auth0.jwt.impl.PublicClaims
+import dev.olaren.okane.util.envConfig.EnvConfig
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
@@ -9,9 +10,9 @@ import java.net.URL
 import java.util.concurrent.TimeUnit
 
 fun Application.configureAuthentication() {
-    val audience = environment.config.property("jwt.audience").getString()
-    val issuer = environment.config.property("jwt.issuer").getString()
-    val jwkUrl = environment.config.property("jwt.jwkUrl").getString()
+    val audience = EnvConfig.getString("jwt.audience")
+    val issuer = EnvConfig.getString("jwt.issuer")
+    val jwkUrl = EnvConfig.getString("jwt.jwkUrl")
 
     val jwkProvider = JwkProviderBuilder(URL(jwkUrl))
         .cached(10, 5, TimeUnit.HOURS)
