@@ -1,7 +1,7 @@
 plugins {
-    application
     kotlin("jvm")
     kotlin("plugin.serialization")
+    id("com.github.johnrengelman.shadow")
 }
 
 val okaneVersion: String by project
@@ -16,8 +16,13 @@ val ktorEnvConfigVersion: String by project
 
 group = "dev.olaren.okane"
 version = okaneVersion
-application {
-    mainClass.set("io.ktor.server.netty.EngineMain")
+
+tasks {
+    shadowJar {
+        manifest {
+            attributes(Pair("Main-Class", "io.ktor.server.netty.EngineMain"))
+        }
+    }
 }
 
 repositories {

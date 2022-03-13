@@ -1,0 +1,16 @@
+services:
+  server:
+    build: .
+    ports:
+      - 8080:8080
+    environment:
+      - ENVIRONMENT=local
+      - MONGODB_CONNSTRING=mongodb://okaneko-db:okaneko-db@okaneko-db
+  mongodb:
+    image: mongo:5.0
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=okaneko-db
+      - MONGO_INITDB_ROOT_PASSWORD=okaneko-db
+      - MONGO_INITDB_DATABASE=okaneko-db
