@@ -1,6 +1,3 @@
-import java.io.FileInputStream
-import java.util.*
-
 plugins {
     kotlin("android")
 
@@ -21,14 +18,10 @@ val androidCompileSdk: String by project
 val androidMinSdk: String by project
 val androidTargetSdk: String by project
 
-val keystorePropertiesFile = project.file("keystore.properties")
-val keystoreProperties = Properties()
-keystoreProperties.load(FileInputStream(keystorePropertiesFile))
-
 android {
     compileSdk = androidCompileSdk.toInt()
     defaultConfig {
-        applicationId = "dev.olaren.okane.android"
+        applicationId = "app.okaneko.android"
         minSdk = androidMinSdk.toInt()
         targetSdk = androidTargetSdk.toInt()
         versionCode = 1
@@ -37,19 +30,10 @@ android {
             useSupportLibrary = true
         }
     }
-    signingConfigs {
-        create("release") {
-            keyAlias = keystoreProperties["keyAlias"] as String?
-            keyPassword = keystoreProperties["keyPassword"] as String?
-            storeFile = keystoreProperties["storeFile"]?.let { file(it) }
-            storePassword = keystoreProperties["storePassword"] as String?
-        }
-    }
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
             isShrinkResources = true
-            signingConfig = signingConfigs.getByName("release")
         }
     }
     compileOptions {

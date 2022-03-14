@@ -14,7 +14,7 @@ val kotlinVersion: String by project
 val logbackVersion: String by project
 val ktorEnvConfigVersion: String by project
 
-group = "dev.olaren.okane"
+group = "app.okaneko"
 version = okaneVersion
 
 tasks {

@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="dev.olaren.okane.android">
+          xmlns:tools="http://schemas.android.com/tools"
+          package="app.okaneko.android">
 
     <application
-        android:icon="@drawable/icon"
-        android:fullBackupContent="false"
-        android:allowBackup="false"
-        android:supportsRtl="false"
-        android:dataExtractionRules="@xml/data_extraction_rules"
-        android:usesCleartextTraffic="false"
-        tools:targetApi="s">
+            android:icon="@drawable/icon"
+            android:fullBackupContent="false"
+            android:allowBackup="false"
+            android:supportsRtl="false"
+            android:dataExtractionRules="@xml/data_extraction_rules"
+            android:usesCleartextTraffic="false"
+            tools:targetApi="s">
         <activity
-            android:name=".MainActivity"
-            android:exported="true"
-            android:label="@string/okane_name">
+                android:name=".MainActivity"
+                android:exported="true"
+                android:label="@string/okaneko_name">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
     </application>
