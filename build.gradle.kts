@@ -29,3 +29,11 @@ allprojects {
 tasks.register("clean", Delete::class) {
     delete(rootProject.buildDir)
 }
+
+/*
+ * Heroku buildpacks execute the stage task by default
+ * Here we compile the server component to a fat jar.
+ */
+tasks.register("stage") {
+    dependsOn(":server:shadowJar")
+}
