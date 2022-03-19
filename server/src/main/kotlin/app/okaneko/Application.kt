@@ -1,6 +1,6 @@
 package app.okaneko
 
-import app.okaneko.plugins.*
+import app.okaneko.plugin.*
 import io.ktor.server.application.*
 import io.ktor.server.netty.*
 

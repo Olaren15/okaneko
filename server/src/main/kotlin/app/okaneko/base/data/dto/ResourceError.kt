@@ -1,6 +1,6 @@
 package app.okaneko.base.data.dto
 
-import app.okaneko.errors.data.dto.RestError
+import app.okaneko.error.data.dto.RestError
 import io.ktor.http.*
 
 interface ResourceError {
