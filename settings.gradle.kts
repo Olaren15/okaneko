@@ -6,7 +6,7 @@ pluginManagement {
     }
 }
 
-rootProject.name = "Okane"
+rootProject.name = "Okaneko"
 include(":android")
 include(":mobileShared")
 include(":shared")

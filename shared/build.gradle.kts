@@ -7,6 +7,7 @@ plugins {
 
 val okaneVersion: String by project
 val kotlinSerializationVersion: String by project
+val kotlinDateTimeVersion: String by project
 
 val androidCompileSdk: String by project
 val androidMinSdk: String by project
@@ -34,6 +35,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinSerializationVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-datetime:$kotlinDateTimeVersion")
             }
         }
 

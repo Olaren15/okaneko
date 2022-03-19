@@ -7,12 +7,13 @@ plugins {
 val okaneVersion: String by project
 val kodeinDiServerVersion: String by project
 val kotlinResultVersion: String by project
-val kotlinXUuidVersion: String by project
 
 val ktorVersion: String by project
 val kotlinVersion: String by project
 val logbackVersion: String by project
-val ktorEnvConfigVersion: String by project
+val kmongoVersion: String by project
+val bcryptVersion: String by project
+val kotlinDateTimeVersion: String by project
 
 group = "app.okaneko"
 version = okaneVersion
@@ -43,6 +44,15 @@ dependencies {
 
     // Result
     implementation("com.michael-bull.kotlin-result:kotlin-result:$kotlinResultVersion")
+
+    // MongoDB
+    implementation("org.litote.kmongo:kmongo-coroutine-serialization:$kmongoVersion")
+
+    // time
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:$kotlinDateTimeVersion")
+
+    // Bcrypt
+    implementation("at.favre.lib:bcrypt:$bcryptVersion")
 
     // Kodein
     implementation("org.kodein.di:kodein-di-framework-ktor-server-jvm:$kodeinDiServerVersion")

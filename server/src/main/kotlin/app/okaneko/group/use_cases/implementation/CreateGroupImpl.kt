@@ -1,0 +1,37 @@
+package app.okaneko.group.use_cases.implementation
+
+import app.okaneko.authentication.data.dto.User
+import app.okaneko.group.data.dto.Group
+import app.okaneko.group.data.dto.GroupCreation
+import app.okaneko.group.repositories.GroupRepository
+import app.okaneko.group.errors.CreateGroupError
+import app.okaneko.group.use_cases.CreateGroup
+import com.github.michaelbull.result.Err
+import com.github.michaelbull.result.Ok
+import com.github.michaelbull.result.Result
+import com.github.michaelbull.result.mapBoth
+import kotlinx.datetime.Clock
+
+class CreateGroupImpl(private val repository: GroupRepository) : CreateGroup {
+    override suspend fun invoke(
+        newGroup: GroupCreation,
+        user: User
+    ): Result<Group, CreateGroupError> {
+        val group = Group(
+            id = "",
+            usersIds = listOf(user.id),
+            name = newGroup.name,
+            createdAt = Clock.System.now(),
+            updatedAt = Clock.System.now()
+        )
+
+        return repository.insert(group).mapBoth(
+            success = {
+                Ok(it)
+            },
+            failure = {
+                Err(CreateGroupError.CreationError)
+            }
+        )
+    }
+}

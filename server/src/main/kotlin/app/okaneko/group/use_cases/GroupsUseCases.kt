@@ -1,5 +1,7 @@
 package app.okaneko.group.use_cases
 
 data class GroupsUseCases(
-    val getGroupById: GetGroupById
+    val getGroupsForUser: GetGroupsForUser,
+    val getGroupById: GetGroupById,
+    val createGroup: CreateGroup,
 )

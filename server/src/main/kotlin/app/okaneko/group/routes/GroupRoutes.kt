@@ -1,10 +1,12 @@
 package app.okaneko.group.routes
 
 import app.okaneko.authentication.data.mapper.getUserFromCall
-import app.okaneko.group.data.mapper.mapToRestError
+import app.okaneko.group.data.dto.GroupCreation
 import app.okaneko.group.use_cases.GroupsUseCases
 import com.github.michaelbull.result.mapBoth
+import io.ktor.http.*
 import io.ktor.server.application.*
+import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
@@ -16,6 +18,10 @@ fun Route.groupsRoutes() {
         val groupsUseCases: GroupsUseCases by closestDI().instance()
 
         get("/@me") {
+            val user = getUserFromCall(call)
+
+            val groups = groupsUseCases.getGroupsForUser(user)
+            call.respond(HttpStatusCode.OK, groups)
         }
 
         get("/{id}") {
@@ -24,15 +30,24 @@ fun Route.groupsRoutes() {
 
             groupsUseCases.getGroupById(groupId, user.id).mapBoth(
                 success = {
-                    call.respond(it)
+                    call.respond(HttpStatusCode.OK, it)
                 },
                 failure = {
-                    call.respond(mapToRestError(it))
+                    call.respond(it.statusCode, it.toRestError())
                 })
         }
 
         post {
-
+            val user = getUserFromCall(call)
+            val group = call.receive<GroupCreation>()
+            groupsUseCases.createGroup(group, user).mapBoth(
+                success = {
+                    call.respond(HttpStatusCode.Created, it)
+                },
+                failure = {
+                    call.respond(it.statusCode, it.toRestError())
+                }
+            )
         }
 
         patch("/{id}") {

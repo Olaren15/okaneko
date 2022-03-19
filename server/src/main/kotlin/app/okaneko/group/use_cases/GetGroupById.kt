@@ -5,5 +5,5 @@ import app.okaneko.group.errors.GetGroupError
 import com.github.michaelbull.result.Result
 
 interface GetGroupById {
-    operator fun invoke(groupId: String, userId: String): Result<Group, GetGroupError>
+    suspend operator fun invoke(groupId: String, userId: String): Result<Group, GetGroupError>
 }
