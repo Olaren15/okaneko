@@ -12,6 +12,7 @@ import io.ktor.server.routing.*
 import io.ktor.server.util.*
 import org.kodein.di.instance
 import org.kodein.di.ktor.closestDI
+import java.util.*
 
 fun Route.groupsRoutes() {
     route("/groups") {
@@ -26,7 +27,7 @@ fun Route.groupsRoutes() {
 
         get("/{id}") {
             val user = getUserFromCall(call)
-            val groupId = call.parameters.getOrFail("id")
+            val groupId = call.parameters.getOrFail<UUID>("id")
 
             groupsUseCases.getGroupById(groupId, user.id).mapBoth(
                 success = {

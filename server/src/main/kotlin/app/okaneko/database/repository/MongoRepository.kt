@@ -1,8 +1,7 @@
 package app.okaneko.database.repository
 
 import app.okaneko.base.data.dto.Dto
-import app.okaneko.database.data.entity.MongoEntity
-import app.okaneko.database.data.entity.dtoToEntity
+import app.okaneko.database.data.entity.Entity
 import app.okaneko.database.error.EntityNotCreatedError
 import app.okaneko.database.error.EntityNotDeletedError
 import app.okaneko.database.error.EntityNotFoundError
@@ -13,46 +12,43 @@ import com.github.michaelbull.result.Result
 import kotlinx.datetime.Clock
 import org.litote.kmongo.coroutine.CoroutineCollection
 import org.litote.kmongo.eq
-import org.litote.kmongo.id.WrappedObjectId
+import java.util.*
 
-interface MongoRepository<T : MongoEntity<U>, U : Dto> : Repository<U> {
+interface MongoRepository<T : Entity<U>, U : Dto> : Repository<T, U> {
     val collection: CoroutineCollection<T>
 
     fun updateTimestamp(entity: T) {
         entity.updatedAt = Clock.System.now()
     }
 
-    override suspend fun getById(id: String): Result<U, EntityNotFoundError> {
-        return collection.findOneById(WrappedObjectId<T>(id))?.let {
-            Ok(it.toDto())
+    override suspend fun getById(id: UUID): Result<T, EntityNotFoundError> {
+        return collection.findOneById(id)?.let {
+            Ok(it)
         } ?: run {
             Err(EntityNotFoundError)
         }
     }
 
-    override suspend fun getAll(): List<U> {
-        return collection.find().toList().map {
-            it.toDto()
-        }
+    override suspend fun getAll(): List<T> {
+        return collection.find().toList()
     }
 
-    override suspend fun deleteById(id: String): Result<U, EntityNotDeletedError> {
-        return collection.findOneAndDelete(MongoEntity<U>::_id eq WrappedObjectId<T>(id))?.let {
-            Ok(it.toDto())
+    override suspend fun deleteById(id: UUID): Result<T, EntityNotDeletedError> {
+        return collection.findOneAndDelete(Entity<U>::id eq id)?.let {
+            Ok(it)
         } ?: run {
             Err(EntityNotDeletedError)
         }
     }
 
-    override suspend fun insert(dto: U): Result<U, EntityNotCreatedError> {
-        @Suppress("UNCHECKED_CAST")
-        val mongoEntity = dtoToEntity(dto) as T
+    override suspend fun insert(entity: T): Result<T, EntityNotCreatedError> {
+        entity.id = UUID.randomUUID()
 
         return try {
-            val insertResult = collection.insertOne(mongoEntity)
+            val insertResult = collection.insertOne(entity)
 
             if (insertResult.wasAcknowledged()) {
-                Ok(collection.findOneById(insertResult.insertedId!!)!!.toDto())
+                Ok(collection.findOneById(insertResult.insertedId!!)!!)
             } else {
                 Err(EntityNotCreatedError)
             }
@@ -61,17 +57,14 @@ interface MongoRepository<T : MongoEntity<U>, U : Dto> : Repository<U> {
         }
     }
 
-    override suspend fun update(dto: U): Result<U, EntityNotUpdatedError> {
-        @Suppress("UNCHECKED_CAST")
-        val mongoEntity: T = dtoToEntity(dto) as T
-
-        updateTimestamp(mongoEntity)
+    override suspend fun update(entity: T): Result<T, EntityNotUpdatedError> {
+        updateTimestamp(entity)
 
         return try {
-            val updateResult = collection.updateOne(MongoEntity<U>::_id eq mongoEntity._id, mongoEntity)
+            val updateResult = collection.updateOne(Entity<U>::id eq entity.id, entity)
 
             if (updateResult.wasAcknowledged()) {
-                Ok(collection.findOneById(updateResult.upsertedId!!)!!.toDto())
+                Ok(collection.findOneById(updateResult.upsertedId!!)!!)
             } else {
                 Err(EntityNotUpdatedError)
             }

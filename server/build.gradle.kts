@@ -7,13 +7,14 @@ plugins {
 val okaneVersion: String by project
 val kodeinDiServerVersion: String by project
 val kotlinResultVersion: String by project
+val kotlinDateTimeVersion: String by project
 
 val ktorVersion: String by project
 val kotlinVersion: String by project
 val logbackVersion: String by project
 val kmongoVersion: String by project
 val bcryptVersion: String by project
-val kotlinDateTimeVersion: String by project
+val kotlinUuidVersion: String by project
 
 group = "app.okaneko"
 version = okaneVersion
@@ -27,6 +28,8 @@ tasks {
 }
 
 repositories {
+    // For kotlinx uuid
+    maven("https://maven.pkg.github.com/cy6ergn0m/kotlinx-uuid")
     // For Kodein-di 8.0 snapshot
     maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
 }
@@ -48,8 +51,9 @@ dependencies {
     // MongoDB
     implementation("org.litote.kmongo:kmongo-coroutine-serialization:$kmongoVersion")
 
-    // time
+    // Kotlinx
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:$kotlinDateTimeVersion")
+    //implementation("org.jetbrains.kotlinx.experimental:kotlinx-uuid-core:$kotlinUuidVersion")
 
     // Bcrypt
     implementation("at.favre.lib:bcrypt:$bcryptVersion")

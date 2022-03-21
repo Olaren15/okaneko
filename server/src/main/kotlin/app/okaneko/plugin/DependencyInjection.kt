@@ -2,8 +2,10 @@ package app.okaneko.plugin
 
 import app.okaneko.group.di.groupsServerModule
 import com.mongodb.ConnectionString
+import com.mongodb.MongoClientSettings
 import io.ktor.server.application.*
 import kotlinx.coroutines.runBlocking
+import org.bson.UuidRepresentation
 import org.kodein.di.bind
 import org.kodein.di.eagerSingleton
 import org.kodein.di.ktor.di
@@ -21,7 +23,12 @@ fun Application.configureDependencyInjection() {
                 val databaseName =
                     connectionString.database ?: environment.config.property("mongo.database").getString()
 
-                val client = KMongo.createClient(connectionString).coroutine
+                val client = KMongo.createClient(
+                    MongoClientSettings.builder()
+                        .applyConnectionString(connectionString)
+                        .uuidRepresentation(UuidRepresentation.STANDARD)
+                        .build()
+                ).coroutine
                 val database = client.getDatabase(databaseName)
 
                 runBlocking {

@@ -7,6 +7,8 @@ import app.okaneko.group.use_case.GetGroupsForUser
 
 class GetGroupsForUserImpl(private val repository: GroupRepository) : GetGroupsForUser {
     override suspend fun invoke(user: User): List<Group> {
-        return repository.getGroupsByUserId(user.id)
+        return repository.getGroupsByUserId(user.id).map {
+            it.toDto()
+        }
     }
 }

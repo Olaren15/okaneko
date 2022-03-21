@@ -10,9 +10,7 @@ import org.litote.kmongo.coroutine.CoroutineDatabase
 class MongoGroupRepository(db: CoroutineDatabase) : GroupRepository, MongoRepository<GroupEntity, Group> {
     override var collection: CoroutineCollection<GroupEntity> = db.getCollection()
 
-    override suspend fun getGroupsByUserId(userId: String): List<Group> {
-        return collection.find("{ usersIds: {\$in: [ \"$userId\" ] } }").toList().map {
-            it.toDto()
-        }
+    override suspend fun getGroupsByUserId(userId: String): List<GroupEntity> {
+        return collection.find("{ usersIds: {\$in: [ \"$userId\" ] } }").toList()
     }
 }
