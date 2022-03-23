@@ -1,11 +1,19 @@
 package app.okaneko.authentication.data.mapper
 
 import app.okaneko.authentication.data.dto.User
+import app.okaneko.authentication.data.dto.UserDetails
 import io.ktor.server.application.*
+import kotlinx.datetime.Clock
 
 @Suppress("UNUSED_PARAMETER")
 fun getUserFromCall(call: ApplicationCall): User {
-    return User(id = "1", name = "jacob", email = "jacob@jacob.com", photoUrl = null, isAnonymous = false)
+    return User(
+        id = "1",
+        UserDetails(name = "jacob", email = "jacob@jacob.com", photoUrl = null),
+        isAnonymous = false,
+        createdAt = Clock.System.now(),
+        updatedAt = Clock.System.now(),
+    )
     //val principal: JWTPrincipal = call.principal()!!
     //return mapJwtToUser(principal)
 }
