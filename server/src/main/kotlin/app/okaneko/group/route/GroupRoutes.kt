@@ -1,10 +1,12 @@
 package app.okaneko.group.route
 
-import app.okaneko.authentication.data.mapper.getUserFromCall
-import app.okaneko.group.data.dto.GroupCreation
+import app.okaneko.base.routes.mapping.getUser
+import app.okaneko.base.routes.mapping.mapOk
+import app.okaneko.base.routes.mapping.mapRestError
 import app.okaneko.group.use_case.GroupsUseCases
+import com.github.michaelbull.result.Ok
+import com.github.michaelbull.result.andThen
 import com.github.michaelbull.result.mapBoth
-import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
@@ -19,45 +21,41 @@ fun Route.groupsRoutes() {
         val groupsUseCases: GroupsUseCases by closestDI().instance()
 
         get("/@me") {
-            val user = getUserFromCall(call)
+            val (status, message) = call.getUser()
+                .andThen {
+                    Ok(groupsUseCases.getGroupsForUser(it))
+                }.mapBoth(::mapOk, ::mapRestError)
 
-            val groups = groupsUseCases.getGroupsForUser(user)
-            call.respond(HttpStatusCode.OK, groups)
+            call.respond(status, message)
         }
 
         get("/{id}") {
-            val user = getUserFromCall(call)
-            val groupId = call.parameters.getOrFail<UUID>("id")
+            val (status, message) =
+                call.getUser().andThen {
+                    val id = call.parameters.getOrFail<UUID>("id")
+                    groupsUseCases.getGroupById(id, it)
+                }.mapBoth(::mapOk, ::mapRestError)
 
-            groupsUseCases.getGroupById(groupId, user.id).mapBoth(
-                success = {
-                    call.respond(HttpStatusCode.OK, it)
-                },
-                failure = {
-                    call.respond(it.statusCode, it.toRestError())
-                })
+            call.respond(status, message)
         }
 
         post {
-            val user = getUserFromCall(call)
-            val group = call.receive<GroupCreation>()
-            groupsUseCases.createGroup(group, user).mapBoth(
-                success = {
-                    call.respond(HttpStatusCode.Created, it)
-                },
-                failure = {
-                    call.respond(it.statusCode, it.toRestError())
-                }
-            )
-        }
+            val (status, message) =
+                call.getUser().andThen {
+                    groupsUseCases.createGroup(call.receive(), it)
+                }.mapBoth(::mapOk, ::mapRestError)
 
-        patch("/{id}") {
-
-        }
-
-        delete("/{id}") {
-
+            call.respond(status, message)
         }
     }
+
+    patch("/{id}") {
+
+    }
+
+    delete("/{id}") {
+
+    }
 }
+
 

@@ -8,10 +8,8 @@ import app.okaneko.authentication.error.RegisterUserWithEmailAndPasswordError
 import app.okaneko.authentication.repository.UserRepository
 import app.okaneko.authentication.use_case.RegisterUserWithEmailAndPassword
 import at.favre.lib.crypto.bcrypt.BCrypt
-import com.github.michaelbull.result.Err
-import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
-import com.github.michaelbull.result.mapBoth
+import com.github.michaelbull.result.mapEither
 import kotlinx.datetime.Clock
 
 class RegisterUserWithEmailAndPasswordImpl(private val repository: UserRepository) : RegisterUserWithEmailAndPassword {
@@ -30,12 +28,12 @@ class RegisterUserWithEmailAndPasswordImpl(private val repository: UserRepositor
             updatedAt = Clock.System.now(),
         )
 
-        return repository.insert(newUser).mapBoth(
+        return repository.insert(newUser).mapEither(
             success = {
-                Ok(it.toDto())
+                it.toDto()
             },
             failure = {
-                Err(RegisterUserWithEmailAndPasswordError.CreationError)
+                RegisterUserWithEmailAndPasswordError.CreationError
             }
         )
     }

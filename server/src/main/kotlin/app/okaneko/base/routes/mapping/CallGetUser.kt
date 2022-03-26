@@ -1,18 +1,22 @@
-package app.okaneko.authentication.data.mapper
+package app.okaneko.base.routes.mapping
 
 import app.okaneko.authentication.data.dto.User
 import app.okaneko.authentication.data.dto.UserDetails
+import app.okaneko.base.data.error.CannotRetrieveUserError
+import com.github.michaelbull.result.Ok
+import com.github.michaelbull.result.Result
 import io.ktor.server.application.*
 import kotlinx.datetime.Clock
 
-@Suppress("UNUSED_PARAMETER")
-fun getUserFromCall(call: ApplicationCall): User {
-    return User(
-        id = "1",
-        UserDetails(name = "jacob", email = "jacob@jacob.com", photoUrl = null),
-        isAnonymous = false,
-        createdAt = Clock.System.now(),
-        updatedAt = Clock.System.now(),
+fun ApplicationCall.getUser(): Result<User, CannotRetrieveUserError> {
+    return Ok(
+        User(
+            id = "1",
+            UserDetails(name = "jacob", email = "jacob@jacob.com", photoUrl = null),
+            isAnonymous = false,
+            createdAt = Clock.System.now(),
+            updatedAt = Clock.System.now(),
+        )
     )
     //val principal: JWTPrincipal = call.principal()!!
     //return mapJwtToUser(principal)

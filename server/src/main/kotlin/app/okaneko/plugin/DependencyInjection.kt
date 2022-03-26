@@ -5,7 +5,6 @@ import app.okaneko.group.di.groupsServerModule
 import com.mongodb.ConnectionString
 import com.mongodb.MongoClientSettings
 import io.ktor.server.application.*
-import kotlinx.coroutines.runBlocking
 import org.bson.UuidRepresentation
 import org.kodein.di.bind
 import org.kodein.di.eagerSingleton
@@ -31,19 +30,8 @@ fun Application.configureDependencyInjection() {
                         .uuidRepresentation(UuidRepresentation.STANDARD)
                         .build()
                 ).coroutine
-                val database = client.getDatabase(databaseName)
 
-                runBlocking {
-                    // check if we can access the db
-                    try {
-                        database.listCollectionNames()
-                    } catch (e: Throwable) {
-                        log.error("There was an error trying to connect to the database. Is your connection string valid?")
-                        throw e
-                    }
-                }
-
-                database
+                client.getDatabase(databaseName)
             }
         }
     }

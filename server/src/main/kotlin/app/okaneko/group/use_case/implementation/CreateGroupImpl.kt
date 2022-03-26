@@ -7,10 +7,8 @@ import app.okaneko.group.data.entity.GroupEntity
 import app.okaneko.group.error.CreateGroupError
 import app.okaneko.group.repository.GroupRepository
 import app.okaneko.group.use_case.CreateGroup
-import com.github.michaelbull.result.Err
-import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
-import com.github.michaelbull.result.mapBoth
+import com.github.michaelbull.result.mapEither
 import kotlinx.datetime.Clock
 
 class CreateGroupImpl(private val repository: GroupRepository) : CreateGroup {
@@ -26,12 +24,12 @@ class CreateGroupImpl(private val repository: GroupRepository) : CreateGroup {
             updatedAt = Clock.System.now()
         )
 
-        return repository.insert(group).mapBoth(
+        return repository.insert(group).mapEither(
             success = {
-                Ok(it.toDto())
+                it.toDto()
             },
             failure = {
-                Err(CreateGroupError.CreationError)
+                CreateGroupError.CreationError
             }
         )
     }
