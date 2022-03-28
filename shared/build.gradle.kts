@@ -8,6 +8,8 @@ plugins {
 val okaneVersion: String by project
 val kotlinSerializationVersion: String by project
 val kotlinDateTimeVersion: String by project
+val kotlinResultVersion: String by project
+val kodeinDiVersion: String by project
 
 val androidCompileSdk: String by project
 val androidMinSdk: String by project
@@ -36,6 +38,8 @@ kotlin {
             dependencies {
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinSerializationVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:$kotlinDateTimeVersion")
+                implementation("com.michael-bull.kotlin-result:kotlin-result:$kotlinResultVersion")
+                implementation("org.kodein.di:kodein-di:$kodeinDiVersion")
             }
         }
 

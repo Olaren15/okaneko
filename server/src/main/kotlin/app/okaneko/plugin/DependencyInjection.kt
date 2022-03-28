@@ -1,6 +1,7 @@
 package app.okaneko.plugin
 
 import app.okaneko.authentication.di.authenticationServerModule
+import app.okaneko.di.sharedModule
 import app.okaneko.group.di.groupsServerModule
 import com.mongodb.ConnectionString
 import com.mongodb.MongoClientSettings
@@ -14,6 +15,7 @@ import org.litote.kmongo.reactivestreams.KMongo
 
 fun Application.configureDependencyInjection() {
     di {
+        import(sharedModule)
         import(authenticationServerModule)
         import(groupsServerModule)
 

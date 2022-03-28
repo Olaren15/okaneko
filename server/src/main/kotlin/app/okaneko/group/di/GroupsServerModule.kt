@@ -11,7 +11,7 @@ import app.okaneko.group.use_case.implementation.GetGroupByIdImpl
 import app.okaneko.group.use_case.implementation.GetGroupsForUserImpl
 import org.kodein.di.*
 
-val groupsServerModule = DI.Module("GroupsServerModule") {
+val groupsServerModule = DI.Module("GroupsServer") {
     bind {
         singleton {
             GroupsUseCases(
