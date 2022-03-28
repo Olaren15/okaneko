@@ -13,9 +13,12 @@ sealed class RegisterUserWithEmailAndPasswordError(
     object PasswordTooWeak :
         RegisterUserWithEmailAndPasswordError(HttpStatusCode.BadRequest, "The provided password is too weak.")
 
+    object EmailAlreadyInUse :
+        RegisterUserWithEmailAndPasswordError(HttpStatusCode.Conflict, "The provided email is already in use.")
+
     object CreationError :
         RegisterUserWithEmailAndPasswordError(
             HttpStatusCode.InternalServerError,
-            "An error occurred while creating the user"
+            "An error occurred while creating the user."
         )
 }

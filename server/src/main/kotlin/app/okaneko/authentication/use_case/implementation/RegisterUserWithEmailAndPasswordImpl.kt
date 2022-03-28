@@ -8,33 +8,35 @@ import app.okaneko.authentication.error.RegisterUserWithEmailAndPasswordError
 import app.okaneko.authentication.repository.UserRepository
 import app.okaneko.authentication.use_case.RegisterUserWithEmailAndPassword
 import at.favre.lib.crypto.bcrypt.BCrypt
-import com.github.michaelbull.result.Result
-import com.github.michaelbull.result.mapEither
+import com.github.michaelbull.result.*
 import kotlinx.datetime.Clock
 
 class RegisterUserWithEmailAndPasswordImpl(private val repository: UserRepository) : RegisterUserWithEmailAndPassword {
     override suspend fun invoke(registration: EmailPasswordRegistration): Result<User, RegisterUserWithEmailAndPasswordError> {
-        val hashedPassword = BCrypt.withDefaults().hashToString(12, registration.password.toCharArray())
+        return repository.getUserByEmail(registration.email)
+            .mapBoth(
+                success = { Err(RegisterUserWithEmailAndPasswordError.EmailAlreadyInUse) },
+                failure = { Ok(Unit) },
+            )
+            .andThen {
+                val hashedPassword = BCrypt.withDefaults().hashToString(12, registration.password.toCharArray())
 
-        val newUser = UserEntity(
-            id = null,
-            email = registration.email,
-            name = registration.details?.name,
-            photoUrl = registration.details?.photoUrl,
-            loginOptions = LoginOptions(
-                hashedPassword = hashedPassword
-            ),
-            createdAt = Clock.System.now(),
-            updatedAt = Clock.System.now(),
-        )
+                val newUser = UserEntity(
+                    id = null,
+                    email = registration.email,
+                    name = registration.details?.name,
+                    photoUrl = registration.details?.photoUrl,
+                    loginOptions = LoginOptions(
+                        hashedPassword = hashedPassword
+                    ),
+                    createdAt = Clock.System.now(),
+                    updatedAt = Clock.System.now(),
+                )
 
-        return repository.insert(newUser).mapEither(
-            success = {
-                it.toDto()
-            },
-            failure = {
-                RegisterUserWithEmailAndPasswordError.CreationError
+                repository.insert(newUser).mapEither(
+                    success = { it.toDto() },
+                    failure = { RegisterUserWithEmailAndPasswordError.CreationError },
+                )
             }
-        )
     }
 }
