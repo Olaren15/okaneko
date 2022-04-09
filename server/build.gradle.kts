@@ -28,8 +28,6 @@ tasks {
 }
 
 repositories {
-    // For kotlinx uuid
-    maven("https://maven.pkg.github.com/cy6ergn0m/kotlinx-uuid")
     // For Kodein-di 8.0 snapshot
     maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
 }
@@ -53,7 +51,6 @@ dependencies {
 
     // Kotlinx
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:$kotlinDateTimeVersion")
-    //implementation("org.jetbrains.kotlinx.experimental:kotlinx-uuid-core:$kotlinUuidVersion")
 
     // Bcrypt
     implementation("at.favre.lib:bcrypt:$bcryptVersion")

@@ -1,7 +1,7 @@
 package app.okaneko.authentication.route
 
 import app.okaneko.authentication.use_case.AuthenticationUseCases
-import app.okaneko.base.routes.mapping.mapOk
+import app.okaneko.base.routes.mapping.mapCreated
 import app.okaneko.base.routes.mapping.mapRestError
 import com.github.michaelbull.result.mapBoth
 import io.ktor.server.application.*
@@ -17,7 +17,7 @@ fun Route.authenticationRoutes() {
     route("/auth") {
         post("/register") {
             val (status, message) = authenticationUseCases.registerUserWithEmailAndPassword(call.receive())
-                .mapBoth(::mapOk, ::mapRestError)
+                .mapBoth(::mapCreated, ::mapRestError)
 
             call.respond(status, message)
         }

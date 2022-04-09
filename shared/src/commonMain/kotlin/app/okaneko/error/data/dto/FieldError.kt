@@ -3,8 +3,7 @@ package app.okaneko.error.data.dto
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class RestError(
-    val status: Int,
+data class FieldError(
+    val field: String?,
     val message: String,
-    val errors: List<FieldError>
 )

@@ -1,6 +1,7 @@
 package app.okaneko.group.route
 
 import app.okaneko.base.routes.mapping.getUser
+import app.okaneko.base.routes.mapping.mapCreated
 import app.okaneko.base.routes.mapping.mapOk
 import app.okaneko.base.routes.mapping.mapRestError
 import app.okaneko.group.use_case.GroupsUseCases
@@ -43,7 +44,7 @@ fun Route.groupsRoutes() {
             val (status, message) =
                 call.getUser().andThen {
                     groupsUseCases.createGroup(call.receive(), it)
-                }.mapBoth(::mapOk, ::mapRestError)
+                }.mapBoth(::mapCreated, ::mapRestError)
 
             call.respond(status, message)
         }
