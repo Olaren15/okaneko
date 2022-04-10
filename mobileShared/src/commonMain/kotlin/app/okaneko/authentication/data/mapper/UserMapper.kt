@@ -1,6 +1,6 @@
 package app.okaneko.authentication.data.mapper
 
-import app.okaneko.authentication.data.dto.User
+import app.okaneko.user.data.dto.User
 import dev.gitlive.firebase.auth.FirebaseUser
 
 class UserMapper {

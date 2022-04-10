@@ -1,6 +1,6 @@
-package app.okaneko.authentication.data.validator
+package app.okaneko.user.data.validator
 
-import app.okaneko.authentication.error.PasswordValidationError
+import app.okaneko.user.error.PasswordValidationError
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result

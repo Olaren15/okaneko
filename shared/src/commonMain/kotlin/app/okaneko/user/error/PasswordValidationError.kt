@@ -1,4 +1,4 @@
-package app.okaneko.authentication.error
+package app.okaneko.user.error
 
 sealed class PasswordValidationError {
     object AtLeastEightCharacters : PasswordValidationError()

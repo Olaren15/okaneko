@@ -1,10 +1,10 @@
-package app.okaneko.authentication.repository.implementation
+package app.okaneko.user.implementation
 
-import app.okaneko.authentication.data.dto.User
-import app.okaneko.authentication.data.entity.UserEntity
-import app.okaneko.authentication.repository.UserRepository
 import app.okaneko.database.error.EntityNotFoundError
 import app.okaneko.database.repository.MongoRepository
+import app.okaneko.user.data.dto.User
+import app.okaneko.user.data.entity.UserEntity
+import app.okaneko.user.repository.UserRepository
 import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.toResultOr
 import org.litote.kmongo.coroutine.CoroutineCollection

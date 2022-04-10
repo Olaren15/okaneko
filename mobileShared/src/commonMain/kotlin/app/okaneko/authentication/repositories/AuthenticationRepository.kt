@@ -1,8 +1,8 @@
 package app.okaneko.authentication.repositories
 
-import app.okaneko.authentication.data.dto.User
 import app.okaneko.authentication.errors.SignInError
 import app.okaneko.authentication.errors.SignUpError
+import app.okaneko.user.data.dto.User
 import com.github.michaelbull.result.Result
 import dev.gitlive.firebase.auth.FirebaseAuth
 

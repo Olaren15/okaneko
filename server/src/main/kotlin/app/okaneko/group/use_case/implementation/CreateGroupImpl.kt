@@ -1,12 +1,12 @@
 package app.okaneko.group.use_case.implementation
 
-import app.okaneko.authentication.data.dto.User
 import app.okaneko.group.data.dto.Group
 import app.okaneko.group.data.dto.GroupCreation
 import app.okaneko.group.data.entity.GroupEntity
 import app.okaneko.group.error.CreateGroupError
 import app.okaneko.group.repository.GroupRepository
 import app.okaneko.group.use_case.CreateGroup
+import app.okaneko.user.data.dto.User
 import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.mapEither
 import kotlinx.datetime.Clock

@@ -1,10 +1,10 @@
 package app.okaneko.authentication.repositories.implementation
 
-import app.okaneko.authentication.data.dto.User
 import app.okaneko.authentication.data.mapper.UserMapper
 import app.okaneko.authentication.errors.SignInError
 import app.okaneko.authentication.errors.SignUpError
 import app.okaneko.authentication.repositories.AuthenticationRepository
+import app.okaneko.user.data.dto.User
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result

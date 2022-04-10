@@ -1,12 +1,12 @@
 package app.okaneko.user.use_case.implementation
 
-import app.okaneko.authentication.data.dto.EmailPasswordRegistration
-import app.okaneko.authentication.data.dto.User
-import app.okaneko.authentication.data.entity.LoginOptions
-import app.okaneko.authentication.data.entity.UserEntity
-import app.okaneko.authentication.data.validator.AuthenticationValidators
-import app.okaneko.authentication.error.RegisterUserWithEmailAndPasswordError
-import app.okaneko.authentication.repository.UserRepository
+import app.okaneko.user.data.dto.EmailPasswordRegistration
+import app.okaneko.user.data.dto.User
+import app.okaneko.user.data.entity.LoginOptions
+import app.okaneko.user.data.entity.UserEntity
+import app.okaneko.user.data.validator.UserValidators
+import app.okaneko.user.error.RegisterUserWithEmailAndPasswordError
+import app.okaneko.user.repository.UserRepository
 import app.okaneko.user.use_case.RegisterUserWithEmailAndPassword
 import at.favre.lib.crypto.bcrypt.BCrypt
 import com.github.michaelbull.result.*
@@ -14,7 +14,7 @@ import kotlinx.datetime.Clock
 
 class RegisterUserWithEmailAndPasswordImpl(
     private val repository: UserRepository,
-    private val validators: AuthenticationValidators
+    private val validators: UserValidators
 ) : RegisterUserWithEmailAndPassword {
     override suspend fun invoke(registration: EmailPasswordRegistration): Result<User, RegisterUserWithEmailAndPasswordError> {
         val trimmedEmail = registration.email.trim()

@@ -1,8 +1,8 @@
 package app.okaneko.base.routes.mapping
 
-import app.okaneko.authentication.data.dto.User
-import app.okaneko.authentication.data.dto.UserDetails
 import app.okaneko.base.data.error.CannotRetrieveUserError
+import app.okaneko.user.data.dto.User
+import app.okaneko.user.data.dto.UserDetails
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
 import io.ktor.server.application.*

@@ -1,9 +1,9 @@
 package app.okaneko.authentication.use_case.implementation
 
-import app.okaneko.authentication.data.dto.User
 import app.okaneko.authentication.errors.SignUpError
 import app.okaneko.authentication.repositories.AuthenticationRepository
 import app.okaneko.authentication.use_case.SignUpWithEmailAndPassword
+import app.okaneko.user.data.dto.User
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Result
 

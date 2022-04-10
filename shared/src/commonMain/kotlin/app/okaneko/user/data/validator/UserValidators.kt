@@ -1,6 +1,6 @@
-package app.okaneko.authentication.data.validator
+package app.okaneko.user.data.validator
 
-data class AuthenticationValidators(
+data class UserValidators(
     val emailValidator: EmailValidator,
     val passwordValidator: PasswordValidator,
 )

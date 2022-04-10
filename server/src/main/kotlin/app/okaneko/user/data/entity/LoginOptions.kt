@@ -1,4 +1,4 @@
-package app.okaneko.authentication.data.entity
+package app.okaneko.user.data.entity
 
 import kotlinx.serialization.Serializable
 

@@ -1,4 +1,4 @@
-package app.okaneko.authentication.error
+package app.okaneko.user.error
 
 import app.okaneko.base.data.dto.ResourceError
 import app.okaneko.error.data.dto.FieldError

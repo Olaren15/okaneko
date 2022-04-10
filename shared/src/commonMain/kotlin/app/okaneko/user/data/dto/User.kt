@@ -1,4 +1,4 @@
-package app.okaneko.authentication.data.dto
+package app.okaneko.user.data.dto
 
 import app.okaneko.base.data.dto.Dto
 import kotlinx.datetime.Instant

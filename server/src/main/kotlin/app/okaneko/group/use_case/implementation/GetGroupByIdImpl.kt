@@ -1,10 +1,10 @@
 package app.okaneko.group.use_case.implementation
 
-import app.okaneko.authentication.data.dto.User
 import app.okaneko.group.data.dto.Group
 import app.okaneko.group.error.GetGroupError
 import app.okaneko.group.repository.GroupRepository
 import app.okaneko.group.use_case.GetGroupById
+import app.okaneko.user.data.dto.User
 import com.github.michaelbull.result.*
 import java.util.*
 

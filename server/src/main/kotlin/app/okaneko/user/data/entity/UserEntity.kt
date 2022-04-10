@@ -1,8 +1,8 @@
-package app.okaneko.authentication.data.entity
+package app.okaneko.user.data.entity
 
-import app.okaneko.authentication.data.dto.User
-import app.okaneko.authentication.data.dto.UserDetails
 import app.okaneko.database.data.entity.Entity
+import app.okaneko.user.data.dto.User
+import app.okaneko.user.data.dto.UserDetails
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Contextual
