@@ -1,4 +1,4 @@
-package app.okaneko.authentication.use_case
+package app.okaneko.user.use_case
 
 import app.okaneko.authentication.data.dto.EmailPasswordRegistration
 import app.okaneko.authentication.data.dto.User

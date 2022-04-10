@@ -1,4 +1,4 @@
-package app.okaneko.authentication.use_case.implementation
+package app.okaneko.user.use_case.implementation
 
 import app.okaneko.authentication.data.dto.EmailPasswordRegistration
 import app.okaneko.authentication.data.dto.User
@@ -7,7 +7,7 @@ import app.okaneko.authentication.data.entity.UserEntity
 import app.okaneko.authentication.data.validator.AuthenticationValidators
 import app.okaneko.authentication.error.RegisterUserWithEmailAndPasswordError
 import app.okaneko.authentication.repository.UserRepository
-import app.okaneko.authentication.use_case.RegisterUserWithEmailAndPassword
+import app.okaneko.user.use_case.RegisterUserWithEmailAndPassword
 import at.favre.lib.crypto.bcrypt.BCrypt
 import com.github.michaelbull.result.*
 import kotlinx.datetime.Clock
