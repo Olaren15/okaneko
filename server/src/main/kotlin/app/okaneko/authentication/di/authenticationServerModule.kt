@@ -1,14 +1,68 @@
 package app.okaneko.authentication.di
 
-import app.okaneko.authentication.use_case.AuthenticationUseCases
-import org.kodein.di.DI
-import org.kodein.di.bind
-import org.kodein.di.singleton
+import app.okaneko.authentication.repository.AccessTokenSecretRepository
+import app.okaneko.authentication.repository.RefreshTokenSecretRepository
+import app.okaneko.authentication.repository.implementation.RedisAccessTokenSecretRepository
+import app.okaneko.authentication.repository.implementation.RedisRefreshTokenSecretRepository
+import app.okaneko.authentication.use_case.*
+import app.okaneko.authentication.use_case.implementation.*
+import org.kodein.di.*
 
 val authenticationServerModule = DI.Module("AuthenticationServer") {
     bind {
+        provider {
+            AuthenticationUseCases(instance())
+        }
+    }
+
+    bind<GenerateAccessTokenAndRefreshToken> {
+        provider {
+            GenerateAccessTokenAndRefreshTokenImpl(
+                generateAccessToken = instance(),
+                generateRefreshToken = instance()
+            )
+        }
+    }
+
+    bind<GenerateAccessToken> {
+        provider {
+            GenerateAccessTokenImpl(
+                getAccessTokenSecret = instance(),
+                appConfig = instance()
+            )
+        }
+    }
+
+    bind<GenerateRefreshToken> {
+        provider {
+            GenerateRefreshTokenImpl(
+                getRefreshTokenSecret = instance(),
+                appConfig = instance()
+            )
+        }
+    }
+
+    bind<GetAccessTokenSecret> {
+        provider {
+            GetAccessTokenSecretSecretImpl(instance())
+        }
+    }
+
+    bind<GetRefreshTokenSecret> {
+        provider {
+            GetRefreshTokenSecretImpl(instance())
+        }
+    }
+
+    bind<AccessTokenSecretRepository> {
         singleton {
-            AuthenticationUseCases(Unit)
+            RedisAccessTokenSecretRepository(instance())
+        }
+    }
+
+    bind<RefreshTokenSecretRepository> {
+        provider {
+            RedisRefreshTokenSecretRepository(instance())
         }
     }
 }

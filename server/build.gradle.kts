@@ -13,6 +13,8 @@ val ktorVersion: String by project
 val kotlinVersion: String by project
 val logbackVersion: String by project
 val kmongoVersion: String by project
+val redissonVersion: String by project
+val redissonCoroutinesVersion: String by project
 val bcryptVersion: String by project
 val kotlinUuidVersion: String by project
 
@@ -46,8 +48,10 @@ dependencies {
     // Result
     implementation("com.michael-bull.kotlin-result:kotlin-result:$kotlinResultVersion")
 
-    // MongoDB
+    // Database
     implementation("org.litote.kmongo:kmongo-coroutine-serialization:$kmongoVersion")
+    implementation("org.redisson:redisson:$redissonVersion")
+    implementation("com.github.vitalyros:redisson-kotlin-coroutines-reactive:$redissonCoroutinesVersion")
 
     // Kotlinx
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:$kotlinDateTimeVersion")

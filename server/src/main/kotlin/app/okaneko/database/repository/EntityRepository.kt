@@ -7,9 +7,9 @@ import app.okaneko.database.error.EntityNotDeletedError
 import app.okaneko.database.error.EntityNotFoundError
 import app.okaneko.database.error.EntityNotUpdatedError
 import com.github.michaelbull.result.Result
-import java.util.UUID
+import java.util.*
 
-interface Repository<T : Entity<U>, U : Dto> {
+interface EntityRepository<T : Entity<U>, U : Dto> {
     suspend fun getById(id: UUID): Result<T, EntityNotFoundError>
 
     suspend fun getAll(): List<T>

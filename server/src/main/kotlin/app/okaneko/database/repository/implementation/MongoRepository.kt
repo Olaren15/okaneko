@@ -1,4 +1,4 @@
-package app.okaneko.database.repository
+package app.okaneko.database.repository.implementation
 
 import app.okaneko.base.data.dto.Dto
 import app.okaneko.database.data.entity.Entity
@@ -6,6 +6,7 @@ import app.okaneko.database.error.EntityNotCreatedError
 import app.okaneko.database.error.EntityNotDeletedError
 import app.okaneko.database.error.EntityNotFoundError
 import app.okaneko.database.error.EntityNotUpdatedError
+import app.okaneko.database.repository.EntityRepository
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
@@ -15,7 +16,7 @@ import org.litote.kmongo.coroutine.CoroutineCollection
 import org.litote.kmongo.eq
 import java.util.*
 
-interface MongoRepository<T : Entity<U>, U : Dto> : Repository<T, U> {
+interface MongoRepository<T : Entity<U>, U : Dto> : EntityRepository<T, U> {
     val collection: CoroutineCollection<T>
 
     fun updateTimestamp(entity: T) {

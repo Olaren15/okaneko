@@ -9,7 +9,7 @@ import org.kodein.di.*
 
 val userServerModule = DI.Module("UserServer") {
     bind {
-        singleton {
+        provider {
             UserUseCases(
                 registerUserWithEmailAndPassword = instance()
             )

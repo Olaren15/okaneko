@@ -1,6 +1,6 @@
 package app.okaneko.group.repository.implementation
 
-import app.okaneko.database.repository.MongoRepository
+import app.okaneko.database.repository.implementation.MongoRepository
 import app.okaneko.group.data.dto.Group
 import app.okaneko.group.data.entity.GroupEntity
 import app.okaneko.group.repository.GroupRepository

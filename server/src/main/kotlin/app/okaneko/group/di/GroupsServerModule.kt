@@ -13,7 +13,7 @@ import org.kodein.di.*
 
 val groupsServerModule = DI.Module("GroupsServer") {
     bind {
-        singleton {
+        provider {
             GroupsUseCases(
                 getGroupsForUser = instance(),
                 getGroupById = instance(),

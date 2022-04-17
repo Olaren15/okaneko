@@ -1,7 +1,7 @@
 package app.okaneko.user.implementation
 
 import app.okaneko.database.error.EntityNotFoundError
-import app.okaneko.database.repository.MongoRepository
+import app.okaneko.database.repository.implementation.MongoRepository
 import app.okaneko.user.data.dto.User
 import app.okaneko.user.data.entity.UserEntity
 import app.okaneko.user.repository.UserRepository
