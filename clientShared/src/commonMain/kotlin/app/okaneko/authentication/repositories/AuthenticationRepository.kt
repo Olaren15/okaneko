@@ -4,11 +4,8 @@ import app.okaneko.authentication.errors.SignInError
 import app.okaneko.authentication.errors.SignUpError
 import app.okaneko.user.data.dto.User
 import com.github.michaelbull.result.Result
-import dev.gitlive.firebase.auth.FirebaseAuth
 
 interface AuthenticationRepository {
-    val auth: FirebaseAuth
-
     suspend fun signUpWithEmailAndPassword(
         email: String,
         password: String

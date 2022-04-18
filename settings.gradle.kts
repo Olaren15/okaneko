@@ -8,6 +8,6 @@ pluginManagement {
 
 rootProject.name = "Okaneko"
 include(":android")
-include(":mobileShared")
+include(":clientShared")
 include(":shared")
 include(":server")

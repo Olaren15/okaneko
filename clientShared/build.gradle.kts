@@ -1,14 +1,13 @@
 plugins {
     kotlin("multiplatform")
-    kotlin("plugin.serialization")
     id("com.android.library")
 }
 
 val okaneVersion: String by project
-val kotlinSerializationVersion: String by project
 val kotlinDateTimeVersion: String by project
 val kotlinResultVersion: String by project
 val kodeinDiVersion: String by project
+val firebaseAuthVersion: String by project
 
 val androidCompileSdk: String by project
 val androidMinSdk: String by project
@@ -24,13 +23,12 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinSerializationVersion")
+                implementation(project(":shared"))
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:$kotlinDateTimeVersion")
                 implementation("com.michael-bull.kotlin-result:kotlin-result:$kotlinResultVersion")
                 implementation("org.kodein.di:kodein-di:$kodeinDiVersion")
             }
         }
-
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))

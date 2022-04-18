@@ -1,7 +1,7 @@
 package app.okaneko.authentication.di
 
 import app.okaneko.authentication.repositories.AuthenticationRepository
-import app.okaneko.authentication.repositories.implementation.FirebaseAuthenticationRepositoryImpl
+import app.okaneko.authentication.repositories.implementation.AuthenticationRepositoryImpl
 import app.okaneko.authentication.use_case.*
 import app.okaneko.authentication.use_case.implementation.*
 import org.kodein.di.*
@@ -45,7 +45,7 @@ val authenticationCommonModule = DI.Module(name = "AuthenticationCommon") {
 
     bind<AuthenticationRepository> {
         singleton(sync = false) {
-            FirebaseAuthenticationRepositoryImpl()
+            AuthenticationRepositoryImpl()
         }
     }
 }

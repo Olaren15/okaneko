@@ -1,8 +1,6 @@
 plugins {
     kotlin("android")
-
     id("com.android.application")
-    id("com.google.gms.google-services")
 }
 
 val okaneVersion: String by project
@@ -18,6 +16,7 @@ val androidCompileSdk: String by project
 val androidMinSdk: String by project
 val androidTargetSdk: String by project
 
+@Suppress("UnstableApiUsage")
 android {
     compileSdk = androidCompileSdk.toInt()
     defaultConfig {
@@ -57,7 +56,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":mobileShared"))
+    implementation(project(":clientShared"))
 
     // compose
     implementation("androidx.navigation:navigation-compose:$navigationComposeVersion")
