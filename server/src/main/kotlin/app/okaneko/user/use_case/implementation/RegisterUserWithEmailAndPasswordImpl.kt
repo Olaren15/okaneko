@@ -7,14 +7,15 @@ import app.okaneko.user.data.entity.UserEntity
 import app.okaneko.user.data.validator.UserValidators
 import app.okaneko.user.error.RegisterUserWithEmailAndPasswordError
 import app.okaneko.user.repository.UserRepository
+import app.okaneko.user.use_case.HashUserPassword
 import app.okaneko.user.use_case.RegisterUserWithEmailAndPassword
-import at.favre.lib.crypto.bcrypt.BCrypt
 import com.github.michaelbull.result.*
 import kotlinx.datetime.Clock
 
 class RegisterUserWithEmailAndPasswordImpl(
     private val repository: UserRepository,
-    private val validators: UserValidators
+    private val validators: UserValidators,
+    private val hashUserPassword: HashUserPassword
 ) : RegisterUserWithEmailAndPassword {
     override suspend fun invoke(registration: EmailPasswordRegistration): Result<User, RegisterUserWithEmailAndPasswordError> {
         val trimmedEmail = registration.email.trim()
@@ -34,15 +35,13 @@ class RegisterUserWithEmailAndPasswordImpl(
                     )
             }
             .andThen {
-                val hashedPassword = BCrypt.withDefaults().hashToString(12, trimmedPassword.toCharArray())
-
                 val newUser = UserEntity(
                     id = null,
                     email = trimmedEmail,
                     name = registration.details?.name?.trim(),
                     photoUrl = registration.details?.photoUrl?.trim(),
                     loginOptions = LoginOptions(
-                        hashedPassword = hashedPassword
+                        hashedPassword = hashUserPassword(trimmedPassword)
                     ),
                     createdAt = Clock.System.now(),
                     updatedAt = Clock.System.now(),

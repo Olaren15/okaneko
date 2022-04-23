@@ -1,4 +1,4 @@
-package app.okaneko.user.implementation
+package app.okaneko.user.repository.implementation
 
 import app.okaneko.database.error.EntityNotFoundError
 import app.okaneko.database.repository.implementation.MongoRepository
