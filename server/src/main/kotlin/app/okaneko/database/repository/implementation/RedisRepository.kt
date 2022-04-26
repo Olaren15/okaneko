@@ -6,6 +6,9 @@ import app.okaneko.database.error.KeyNotUpdatedError
 import app.okaneko.database.repository.KeyValueRepository
 import com.github.michaelbull.result.*
 import org.vitalyros.redisson.kotlin.coroutines.RedissonCoroutinesClient
+import java.util.concurrent.TimeUnit
+import kotlin.time.Duration
+import kotlin.time.DurationUnit
 
 interface RedisRepository : KeyValueRepository {
     val client: RedissonCoroutinesClient
@@ -19,9 +22,14 @@ interface RedisRepository : KeyValueRepository {
         return client.getBucket<String>(key).isExists()
     }
 
-    override suspend fun setValue(value: String): Result<String, KeyNotUpdatedError> {
+    override suspend fun setValue(value: String, timeToLive: Duration?): Result<String, KeyNotUpdatedError> {
         val bucket = client.getBucket<String>(key)
-        bucket.set(value)
+
+        timeToLive?.let {
+            bucket.set(value, it.toLong(DurationUnit.SECONDS), TimeUnit.SECONDS)
+        } ?: run {
+            bucket.set(value)
+        }
 
         return bucket.get()
             .toResultOr { KeyNotUpdatedError }

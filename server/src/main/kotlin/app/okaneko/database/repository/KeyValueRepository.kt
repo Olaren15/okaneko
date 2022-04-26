@@ -4,6 +4,7 @@ import app.okaneko.database.error.KeyNotDeletedError
 import app.okaneko.database.error.KeyNotFoundError
 import app.okaneko.database.error.KeyNotUpdatedError
 import com.github.michaelbull.result.Result
+import kotlin.time.Duration
 
 interface KeyValueRepository {
     val key: String
@@ -12,7 +13,7 @@ interface KeyValueRepository {
 
     suspend fun isValuePresent(): Boolean
 
-    suspend fun setValue(value: String): Result<String, KeyNotUpdatedError>
+    suspend fun setValue(value: String, timeToLive: Duration? = null): Result<String, KeyNotUpdatedError>
 
     suspend fun deleteValue(): Result<Unit, KeyNotDeletedError>
 }

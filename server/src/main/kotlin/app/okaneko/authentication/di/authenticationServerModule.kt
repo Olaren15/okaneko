@@ -3,6 +3,7 @@ package app.okaneko.authentication.di
 import app.okaneko.authentication.repository.AccessTokenSecretRepository
 import app.okaneko.authentication.repository.RefreshTokenSecretRepository
 import app.okaneko.authentication.repository.implementation.RedisAccessTokenSecretRepository
+import app.okaneko.authentication.repository.implementation.RedisRefreshTokenRepository
 import app.okaneko.authentication.repository.implementation.RedisRefreshTokenSecretRepository
 import app.okaneko.authentication.use_case.*
 import app.okaneko.authentication.use_case.implementation.*
@@ -19,7 +20,8 @@ val authenticationServerModule = DI.Module("AuthenticationServer") {
         provider {
             GenerateAccessTokenAndRefreshTokenImpl(
                 generateAccessToken = instance(),
-                generateRefreshToken = instance()
+                generateRefreshToken = instance(),
+                saveRefreshToken = instance(),
             )
         }
     }
@@ -54,6 +56,12 @@ val authenticationServerModule = DI.Module("AuthenticationServer") {
         }
     }
 
+    bind<SaveRefreshToken> {
+        provider {
+            SaveRefreshTokenImpl(instance())
+        }
+    }
+
     bind<AccessTokenSecretRepository> {
         singleton {
             RedisAccessTokenSecretRepository(instance())
@@ -63,6 +71,18 @@ val authenticationServerModule = DI.Module("AuthenticationServer") {
     bind<RefreshTokenSecretRepository> {
         provider {
             RedisRefreshTokenSecretRepository(instance())
+        }
+    }
+
+    bind {
+        provider {
+            { userId: String, refreshToken: String ->
+                RedisRefreshTokenRepository(
+                    client = instance(),
+                    userId = userId,
+                    refreshToken = refreshToken
+                )
+            }
         }
     }
 }

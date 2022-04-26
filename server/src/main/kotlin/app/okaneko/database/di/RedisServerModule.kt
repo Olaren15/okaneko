@@ -19,8 +19,8 @@ val redisServerModule = DI.Module("RedisServerModule") {
     }
 
     bind {
-        provider {
-            Redisson.create().reactive().coroutines()
+        eagerSingleton {
+            Redisson.create(instance()).reactive().coroutines()
         }
     }
 }
